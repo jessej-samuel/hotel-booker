@@ -1,9 +1,21 @@
+import { useRef } from "react";
 import { Link } from "react-router-dom";
 
 const UserRegister = () => {
+  const formRef = useRef<HTMLFormElement>(null);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+    console.log(data); // post data to server
+  };
   return (
     <div className="min-h-screen flex justify-center flex-col">
-      <form className="min-w-fit w-64 mx-auto">
+      <form
+        ref={formRef}
+        className="min-w-fit w-64 mx-auto"
+        onSubmit={handleSubmit}
+      >
         <div className="flex flex-col gap-2 mb-4">
           <label htmlFor="name">Name</label>
           <input
@@ -31,6 +43,11 @@ const UserRegister = () => {
             className="p-2 rounded-sm font-normal text-sm border"
           />
         </div>
+        <input
+          type="submit"
+          value="Register"
+          className="w-full p-2 text-sm font-medium bg-blue-600 hover:bg-blue-500 rounded-sm mb-8"
+        />
       </form>
       <p className="w-fit mx-auto">
         Already have an account?{" "}
