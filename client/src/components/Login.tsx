@@ -18,7 +18,7 @@ const Login = () => {
             type="text"
             name="email"
             id="email"
-            className="p-2 rounded-sm font-normal text-sm"
+            className="p-2 rounded-sm font-normal text-sm border"
           />
         </div>
         <div className="flex flex-col gap-2 mb-4">
@@ -27,7 +27,7 @@ const Login = () => {
             type="password"
             name="password"
             id="password"
-            className="p-2 rounded-sm font-normal text-sm"
+            className="p-2 rounded-sm font-normal text-sm border"
           />
         </div>
         <input

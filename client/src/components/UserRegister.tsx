@@ -2,21 +2,43 @@ import { Link } from "react-router-dom";
 
 const UserRegister = () => {
   return (
-    <>
-      <form>
-        <label htmlFor="username">Username</label>
-        <input type="text" name="username" id="username" />
-        <label htmlFor="email">Email</label>
-        <input type="text" name="email" id="email" />
-        <label htmlFor="password">Password</label>
-        <input type="password" name="password" id="password" />
-        <label htmlFor="password">Confirm Password</label>
-        <input type="password" name="password" id="password" />
+    <div className="min-h-screen flex justify-center flex-col">
+      <form className="min-w-fit w-64 mx-auto">
+        <div className="flex flex-col gap-2 mb-4">
+          <label htmlFor="name">Name</label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            className="p-2 rounded-sm font-normal text-sm border"
+          />
+        </div>
+        <div className="flex flex-col gap-2 mb-4">
+          <label htmlFor="email">Email</label>
+          <input
+            type="text"
+            name="email"
+            id="email"
+            className="p-2 rounded-sm font-normal text-sm border"
+          />
+        </div>
+        <div className="flex flex-col gap-2 mb-4">
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            className="p-2 rounded-sm font-normal text-sm border"
+          />
+        </div>
       </form>
-      <p>
-        Already a user? <Link className="hover:underline text-blue-500" to={"/user/login"}>Login</Link>
+      <p className="w-fit mx-auto">
+        Already have an account?{" "}
+        <Link to={"/user/login"} className="hover:underline text-blue-500">
+          Login
+        </Link>
       </p>
-    </>
+    </div>
   );
 };
 
