@@ -57,7 +57,7 @@ const userLogin = asyncHandler(async (req, res) => {
 });
 
 const hotelReg = asyncHandler(async (req, res) => {
-  const { name, email, password, location } = req.body;
+  const { name, email, password, location, K, KAC, DAC, D, SAC, S } = req.body;
   if (!name || !email || !password || !location) {
     throw new CustomError("Specify the required fields!", 400);
   }
@@ -73,6 +73,12 @@ const hotelReg = asyncHandler(async (req, res) => {
     email,
     password,
     location,
+    K,
+    KAC,
+    D,
+    DAC,
+    S,
+    SAC,
   });
 
   if (newHotel) {
@@ -81,6 +87,12 @@ const hotelReg = asyncHandler(async (req, res) => {
       name: newHotel.name,
       email: newHotel.email,
       location: newHotel.location,
+      K: newHotel.K,
+      KAC: newHotel.KAC,
+      D: newHotel.D,
+      DAC: newHotel.DAC,
+      S: newHotel.S,
+      SAC: newHotel.SAC,
     });
   } else {
     throw new CustomError("Failed to register hotel!", 400);
@@ -95,7 +107,7 @@ const hotelLogin = asyncHandler(async (req, res) => {
   const selectUser = await HotelModel.findOne({
     email: email,
   });
-  // console.log(selectUser);
+
   if (selectUser) {
     if (await selectUser.matchPassword(password)) {
       res.status(200).json({
@@ -103,6 +115,12 @@ const hotelLogin = asyncHandler(async (req, res) => {
         name: selectUser.name,
         email: selectUser.email,
         location: selectUser.location,
+        K: selectUser.K,
+        KAC: selectUser.KAC,
+        D: selectUser.D,
+        DAC: selectUser.DAC,
+        S: selectUser.S,
+        SAC: selectUser.SAC,
       });
     } else {
       throw new CustomError("Password is incorrect!", 400);
