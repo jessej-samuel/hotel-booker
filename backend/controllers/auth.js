@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const { CustomError } = require("../error/custom");
 const UserModel = require("../models/auth");
+const HotelModel = require("../models/hotel");
 
 const userReg = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
@@ -32,27 +33,83 @@ const userReg = asyncHandler(async (req, res) => {
 });
 
 const userLogin = asyncHandler(async (req, res) => {
-  try {
-    res.status(200).send("hello");
-  } catch (err) {
-    throw new CustomError(err.message, 400);
+  const { email, password } = req.body;
+  if (!email || !password) {
+    throw new CustomError("Specify the required fields!", 400);
+  }
+  const selectUser = await UserModel.findOne({
+    email: email,
+  });
+  // console.log(selectUser);
+  if (selectUser) {
+    if (await selectUser.matchPassword(password)) {
+      res.status(200).json({
+        _id: selectUser._id,
+        username: selectUser.username,
+        email: selectUser.email,
+      });
+    } else {
+      throw new CustomError("Password is incorrect!", 400);
+    }
+  } else {
+    throw new CustomError("Specified email doesn't exist!", 400);
   }
 });
 
 const hotelReg = asyncHandler(async (req, res) => {
-  try {
-    res.status(200).send("hello");
-  } catch (err) {
-    throw new CustomError(err.message, 400);
+  const { name, email, password, location } = req.body;
+  if (!name || !email || !password || !location) {
+    throw new CustomError("Specify the required fields!", 400);
+  }
+  const HotelExists = await HotelModel.findOne({
+    $or: [{ email: email }],
+  });
+  if (HotelExists) {
+    throw new CustomError("Email already exist!", 400);
+  }
+
+  const newHotel = await HotelModel.create({
+    name,
+    email,
+    password,
+    location,
+  });
+
+  if (newHotel) {
+    res.status(200).json({
+      _id: newHotel._id,
+      name: newHotel.name,
+      email: newHotel.email,
+      location: newHotel.location,
+    });
+  } else {
+    throw new CustomError("Failed to register hotel!", 400);
   }
 });
 
-const hoteLogin = asyncHandler(async (req, res) => {
-  try {
-    res.status(200).send("hello");
-  } catch (err) {
-    throw new CustomError(err.message, 400);
+const hotelLogin = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    throw new CustomError("Specify the required fields!", 400);
+  }
+  const selectUser = await HotelModel.findOne({
+    email: email,
+  });
+  // console.log(selectUser);
+  if (selectUser) {
+    if (await selectUser.matchPassword(password)) {
+      res.status(200).json({
+        _id: selectUser._id,
+        name: selectUser.name,
+        email: selectUser.email,
+        location: selectUser.location,
+      });
+    } else {
+      throw new CustomError("Password is incorrect!", 400);
+    }
+  } else {
+    throw new CustomError("Specified email doesn't exist!", 400);
   }
 });
 
-module.exports = { userReg, hoteLogin, hotelReg, userLogin };
+module.exports = { userReg, hotelLogin, hotelReg, userLogin };
