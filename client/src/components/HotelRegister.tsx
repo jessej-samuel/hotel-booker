@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import ServerAPI from "../api/ServerAPI";
 
 const sampleData = {
   double_cost: "100",
@@ -22,27 +23,27 @@ const sampleData = {
 
 const formatData = (data: typeof sampleData) => {
   const { name, location, email, password } = data;
-  const k = {
+  const K = {
     count: data.king_count,
     cost: data.king_cost,
   };
-  const kac = {
+  const KAC = {
     count: data.kingac_count,
     cost: data.kingac_cost,
   };
-  const d = {
+  const D = {
     count: data.double_count,
     cost: data.double_cost,
   };
-  const dac = {
+  const DAC = {
     count: data.doubleac_count,
     cost: data.doubleac_cost,
   };
-  const s = {
+  const S = {
     count: data.single_count,
     cost: data.single_cost,
   };
-  const sac = {
+  const SAC = {
     count: data.singleac_count,
     cost: data.singleac_cost,
   };
@@ -51,12 +52,12 @@ const formatData = (data: typeof sampleData) => {
     location,
     email,
     password,
-    k,
-    kac,
-    d,
-    dac,
-    s,
-    sac,
+    K,
+    KAC,
+    D,
+    DAC,
+    S,
+    SAC,
   };
 };
 
@@ -73,7 +74,8 @@ const HotelRegister = () => {
         onSubmit={(e) => {
           e.preventDefault();
           formRef.current
-            ? console.log(
+            ? ServerAPI.post(
+                "/auth/hotel/register",
                 formatData(
                   Object.fromEntries(
                     new FormData(formRef.current)
