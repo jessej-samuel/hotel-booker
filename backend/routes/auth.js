@@ -6,10 +6,12 @@ const {
   userReg,
   userLogin,
   hotelReg,
-  hoteLogin,
+  hotelLogin,
 } = require("../controllers/auth");
 
-router.route("/user").post(userReg).get(userLogin);
-router.route("/hotel").post(hotelReg).get(hoteLogin);
+router.route("/user/register").post(userReg);
+router.route("/user/login").post(userLogin);
+router.route("/hotel/register").post(hotelReg);
+router.route("/hotel/login").post(hotelLogin);
 
 module.exports = router;
