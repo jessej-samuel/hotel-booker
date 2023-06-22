@@ -3,10 +3,11 @@ import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import LoginForm from "./components/LoginForm.tsx";
+
 import HomePage from "./pages/Home.tsx";
-import UserLogin from "./components/UserLogin.tsx";
+import Login from "./components/Login.tsx";
 import UserRegister from "./components/UserRegister.tsx";
+import HotelRegister from "./components/HotelRegister.tsx";
 
 const router = createBrowserRouter([
   {
@@ -20,11 +21,19 @@ const router = createBrowserRouter([
       },
       {
         path: "/user/login",
-        element: <UserLogin />,
+        element: <Login />,
+      },
+      {
+        path: "/hotel/login",
+        element: <Login />,
       },
       {
         path: "/user/register",
         element: <UserRegister />,
+      },
+      {
+        path: "/hotel/register",
+        element: <HotelRegister />,
       },
     ],
   },
