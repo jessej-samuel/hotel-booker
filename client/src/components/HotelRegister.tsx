@@ -1,6 +1,65 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
+const sampleData = {
+  double_cost: "100",
+  double_count: "0",
+  doubleac_cost: "100",
+  doubleac_count: "0",
+  email: "1234jessej@gmail.com",
+  king_cost: "100",
+  king_count: "0",
+  kingac_cost: "100",
+  kingac_count: "0",
+  location: "Chennai",
+  name: "Jessej Nathanael Samuel",
+  password: "",
+  single_cost: "100",
+  single_count: "0",
+  singleac_cost: "100",
+  singleac_count: "0",
+};
+
+const formatData = (data: typeof sampleData) => {
+  const { name, location, email, password } = data;
+  const k = {
+    count: data.king_count,
+    cost: data.king_cost,
+  };
+  const kac = {
+    count: data.kingac_count,
+    cost: data.kingac_cost,
+  };
+  const d = {
+    count: data.double_count,
+    cost: data.double_cost,
+  };
+  const dac = {
+    count: data.doubleac_count,
+    cost: data.doubleac_cost,
+  };
+  const s = {
+    count: data.single_count,
+    cost: data.single_cost,
+  };
+  const sac = {
+    count: data.singleac_count,
+    cost: data.singleac_cost,
+  };
+  return {
+    name,
+    location,
+    email,
+    password,
+    k,
+    kac,
+    d,
+    dac,
+    s,
+    sac,
+  };
+};
+
 const HotelRegister = () => {
   const formRef = useRef(null);
   useEffect(() => {
@@ -15,8 +74,12 @@ const HotelRegister = () => {
           e.preventDefault();
           formRef.current
             ? console.log(
-                Object.fromEntries(new FormData(formRef.current).entries())
-              )
+                formatData(
+                  Object.fromEntries(
+                    new FormData(formRef.current)
+                  ) as typeof sampleData
+                )
+              ) // post this data to the server
             : null;
         }}
       >
