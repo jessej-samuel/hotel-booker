@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
+import ServerAPI from "../api/ServerAPI";
 
 const UserRegister = () => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -8,6 +9,13 @@ const UserRegister = () => {
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
     console.log(data); // post data to server
+    ServerAPI.post("/auth/user/register", data)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <div className="min-h-screen flex justify-center flex-col">
@@ -17,11 +25,11 @@ const UserRegister = () => {
         onSubmit={handleSubmit}
       >
         <div className="flex flex-col gap-2 mb-4">
-          <label htmlFor="name">Name</label>
+          <label htmlFor="username">Name</label>
           <input
             type="text"
-            name="name"
-            id="name"
+            name="username"
+            id="username"
             className="p-2 rounded-sm font-normal text-sm border"
           />
         </div>
@@ -46,7 +54,7 @@ const UserRegister = () => {
         <input
           type="submit"
           value="Register"
-          className="w-full p-2 text-sm font-medium bg-blue-600 hover:bg-blue-500 rounded-sm mb-8"
+          className="w-full text-white p-2 text-sm font-medium bg-blue-600 hover:bg-blue-500 rounded-sm mb-8"
         />
       </form>
       <p className="w-fit mx-auto">

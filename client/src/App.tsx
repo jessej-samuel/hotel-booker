@@ -7,10 +7,9 @@ const haha = {
   errorElement: <div>Not found haha</div>,
 };
 function App() {
-
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar />
       <Outlet />
     </>
   );
