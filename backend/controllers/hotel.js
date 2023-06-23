@@ -20,4 +20,15 @@ const getAllHotels = asyncHandler(async (req, res) => {
 
   res.status(200).send(hotelData);
 });
-module.exports = { getAllHotels };
+
+const getHotelById = asyncHandler(async (req, res) => {
+  const { hotelId } = req.params;
+  const HotelExists = await HotelModel.findById({
+    _id: hotelId,
+  });
+  if (HotelExists) {
+    res.status(200).send(HotelExists);
+  }
+  throw new CustomError("No Hotel with such Id exist");
+});
+module.exports = { getAllHotels, getHotelById };
