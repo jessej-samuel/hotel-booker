@@ -16,7 +16,7 @@ const HotelList: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex">
+    <div className="flex justify-evenly">
       {hotels.map((hotel: HotelType) => (
         <HotelCard
           name={hotel.name}
@@ -46,7 +46,7 @@ const HotelCard = ({ name, location, imageLink, id }: HotelType) => {
         alt="Hotel Image"
         className="rounded saturate-0 hover:saturate-100 transition-all duration-500 group-hover:scale-105 hover:shadow"
       />
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-baseline">
         <div>
           <p className="mt-2 text-lg ">{name}</p>
           <p className="text-gray-500 text-xs font-medium uppercase">
@@ -54,7 +54,7 @@ const HotelCard = ({ name, location, imageLink, id }: HotelType) => {
           </p>
         </div>
         <button
-          className="bg-blue-600 px-2 py-2 text-white hover:bg-blue-500 rounded hover:shadow"
+          className="bg-blue-600 h-fit min-w-[90px] px-2 py-2 text-white hover:bg-blue-500 rounded hover:shadow"
           onClick={handleBookClick}
         >
           Book Now
