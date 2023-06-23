@@ -2,14 +2,19 @@ const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema(
   {
+    hotelId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Hotel",
+    },
     userId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       lowercase: true,
       trim: true,
       required: true,
       unique: true,
     },
-    username: {
+    userName: {
       type: String,
       trim: true,
     },
