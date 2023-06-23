@@ -14,6 +14,7 @@ const logHandler = require("./middleware/logs/log");
 const connectDB = require("./config/db");
 const sampleRoutes = require("./routes/sample");
 const authRoutes = require("./routes/auth");
+const orderRoutes = require("./routes/order");
 
 app.use(cors());
 app.use(express.json());
@@ -22,6 +23,7 @@ app.use(logHandler);
 //routes
 app.use("/sample", sampleRoutes);
 app.use("/auth", authRoutes);
+app.use("/order", orderRoutes);
 
 //error handling
 app.use(errorHandler);
