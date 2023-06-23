@@ -15,6 +15,7 @@ const connectDB = require("./config/db");
 const sampleRoutes = require("./routes/sample");
 const authRoutes = require("./routes/auth");
 const orderRoutes = require("./routes/order");
+const hotelRoutes = require("./routes/hotel");
 
 app.use(cors());
 app.use(express.json());
@@ -24,6 +25,7 @@ app.use(logHandler);
 app.use("/sample", sampleRoutes);
 app.use("/auth", authRoutes);
 app.use("/order", orderRoutes);
+app.use("/hotel", hotelRoutes);
 
 //error handling
 app.use(errorHandler);
