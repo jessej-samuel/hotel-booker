@@ -16,7 +16,7 @@ const HotelList: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex justify-evenly">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4 xl:grid-cols-4 w-full place-items-center grid-flow-row">
       {hotels.map((hotel: HotelType) => (
         <HotelCard
           name={hotel.name}
@@ -40,7 +40,7 @@ const HotelCard = ({ name, location, imageLink, id }: HotelType) => {
     navigate("/hotels/" + id);
   };
   return (
-    <div className="max-w-xs p-1 transition-all cursor-default">
+    <div className="w-72 p-1 transition-all cursor-default">
       <img
         src={imageLink}
         alt="Hotel Image"
