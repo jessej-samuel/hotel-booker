@@ -69,6 +69,6 @@ const orderSchema = new mongoose.Schema(
   }
 );
 
-const Orders = mongoose.models.Orders || mongoose.model("Order", orderSchema);
+const Orders = mongoose.models.Order || mongoose.model("Order", orderSchema);
 
 module.exports = Orders;

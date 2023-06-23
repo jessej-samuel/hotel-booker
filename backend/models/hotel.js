@@ -111,7 +111,6 @@ hotelSchema.methods.matchPassword = async function (pass) {
   return (await pass) === this.password;
 };
 
-const Hotels =
-  mongoose.models.hotelSchema || mongoose.model("Hotel", hotelSchema);
+const Hotels = mongoose.models.Hotel || mongoose.model("Hotel", hotelSchema);
 
 module.exports = Hotels;

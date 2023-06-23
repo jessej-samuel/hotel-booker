@@ -27,6 +27,6 @@ userSchema.methods.matchPassword = async function (pass) {
   return (await pass) === this.password;
 };
 
-const Users = mongoose.models.Users || mongoose.model("User", userSchema);
+const Users = mongoose.models.User || mongoose.model("User", userSchema);
 
 module.exports = Users;
