@@ -8,6 +8,7 @@ import HomePage from "./pages/Home.tsx";
 import Login from "./components/Login.tsx";
 import UserRegister from "./components/UserRegister.tsx";
 import HotelRegister from "./components/HotelRegister.tsx";
+import Dashboard from "./pages/Dashboard.tsx";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <HomePage />,
+      },
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
       },
       {
         path: "/user/login",
