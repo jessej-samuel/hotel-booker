@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const { CustomError } = require("../error/custom");
 const HotelModel = require("../models/hotel");
+const OrderModel = require("../models/order");
 
 const orderHotel = asyncHandler(async (req, res) => {
   try {
@@ -19,9 +20,22 @@ const orderHotel = asyncHandler(async (req, res) => {
 
     console.log(HotelExists);
     if (HotelExists) {
+      const Order = OrderModel.create({
+        userId,
+        fromDate,
+        toDate,
+        userName,
+        K,
+        KAC,
+        D,
+        DAC,
+        S,
+        SAC,
+      });
+      res.status(200).send(Order);
     }
 
-    res.status(200).send("hello");
+    // res.status(200).send("hello");
   } catch (err) {
     throw new CustomError(err.message, 400);
   }
