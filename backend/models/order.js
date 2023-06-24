@@ -2,28 +2,27 @@ const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema(
   {
-    hotelId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Hotel",
-    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       lowercase: true,
       trim: true,
-      required: true,
-      unique: true,
+      // required: true,
+    },
+    hotelId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Hotel",
     },
     userName: {
       type: String,
       trim: true,
     },
     fromDate: {
-      type: String,
+      type: Date,
       trim: true,
     },
     toDate: {
-      type: String,
+      type: Date,
       trim: true,
     },
     K: {
