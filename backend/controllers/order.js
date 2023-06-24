@@ -13,29 +13,29 @@ const orderHotel = asyncHandler(async (req, res) => {
     if (!userId || !userName || !hotelId || !fromDate || !toDate) {
       throw new CustomError("Please specify the required fields", 400);
     }
-
-    const HotelExists = await HotelModel.findById({
-      _id: hotelId,
-    });
-
-    console.log(HotelExists);
-    if (HotelExists) {
-      const Order = OrderModel.create({
-        userId,
-        fromDate,
-        toDate,
-        userName,
-        K,
-        KAC,
-        D,
-        DAC,
-        S,
-        SAC,
+    try {
+      const HotelExists = await HotelModel.findOne({
+        _id: hotelId,
       });
-      res.status(200).send(Order);
+      console.log(HotelExists);
+    } catch (error) {
+      throw new CustomError("No such hotel exists!", 400);
     }
 
-    // res.status(200).send("hello");
+    const Order = await OrderModel.create({
+      userId,
+      hotelId,
+      fromDate,
+      toDate,
+      userName,
+      K,
+      KAC,
+      D,
+      DAC,
+      S,
+      SAC,
+    });
+    res.status(200).send(Order);
   } catch (err) {
     throw new CustomError(err.message, 400);
   }
