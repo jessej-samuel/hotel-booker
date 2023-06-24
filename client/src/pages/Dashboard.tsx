@@ -3,11 +3,15 @@ import HotelList from "../components/HotelList";
 import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
-  const [userData, setUserData] = useState("World");
+  const [userData, setUserData] = useState({
+    name: "",
+    email: "",
+    id: "",
+  });
   const navigate = useNavigate();
   useEffect(() => {
     setUserData(
-      JSON.parse(localStorage.getItem("userData") || navigate("/") || "")
+      JSON.parse(localStorage.getItem("userData") || navigate("/") || "{}")
     );
   }, []);
   return (

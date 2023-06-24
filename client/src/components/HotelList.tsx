@@ -37,7 +37,7 @@ const HotelCard = ({ name, location, imageLink, id }: HotelType) => {
   const navigate = useNavigate();
 
   const handleBookClick = () => {
-    navigate("/hotels/" + id);
+    navigate("/hotel/" + id);
   };
   return (
     <div className="w-72 p-1 transition-all cursor-default">
@@ -54,7 +54,7 @@ const HotelCard = ({ name, location, imageLink, id }: HotelType) => {
           </p>
         </div>
         <button
-          className="bg-blue-600 h-fit min-w-[90px] px-2 py-2 text-white hover:bg-blue-500 rounded hover:shadow"
+          className="bg-blue-600 h-fit min-w-[90px] px-2 py-2 text-white hover:bg-blue-500 rounded hover:shadow uppercase text-sm font-semibold"
           onClick={handleBookClick}
         >
           Book Now
