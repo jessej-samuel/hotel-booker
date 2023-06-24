@@ -1,5 +1,6 @@
 const { CustomError } = require("../../error/custom");
 const errorHandlingMiddleware = (err, req, res, next) => {
+  console.log(err);
   if (err instanceof CustomError) {
     return res
       .status(err.statusCode)
