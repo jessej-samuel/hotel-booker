@@ -2,6 +2,8 @@ const asyncHandler = require("express-async-handler");
 const { CustomError } = require("../error/custom");
 const HotelModel = require("../models/hotel");
 const OrderModel = require("../models/order");
+const Axios = require("axios");
+const { response } = require("express");
 
 const getAllHotels = asyncHandler(async (req, res) => {
   let hotels = await HotelModel.find({});
@@ -38,14 +40,25 @@ const getHotelById = asyncHandler(async (req, res) => {
 });
 
 const getHotelBookings = asyncHandler(async (req, res) => {
+  let HotelExists;
   try {
     const { hotelId } = req.params;
-
+    try {
+      HotelExists = await HotelModel.findById({
+        _id: hotelId,
+      });
+      if (!HotelExists) {
+        throw new CustomError("No Hotel with such Id exist", 400);
+      }
+    } catch (err) {
+      throw new CustomError("No Hotel with such Id exist", 400);
+    }
     const { from, to } = req.query;
     // var dateArray = [];
     let results = [];
     let date = new Date(from);
     let last = new Date(to);
+
     while (date <= last) {
       date = new Date(date);
       let datas = {
@@ -84,17 +97,69 @@ const getHotelBookings = asyncHandler(async (req, res) => {
       date.setDate(date.getDate() + 1);
     }
 
-    // console.log(results);
     res.status(200).send(results);
   } catch (err) {
     throw new CustomError("Error occured", 400);
   }
 });
 
-/*
-  TODO:
-  - Send available room types for the given date range
-  
+const isBookAllowed = asyncHandler(async (req, res) => {
+  const { from, to } = req.query;
+  const { hotelId } = req.params;
+  if (!from || !to || !hotelId) {
+    throw new CustomError("Please specify the required fields", 400);
+  }
+  try {
+    const HotelExists = await HotelModel.findById({
+      _id: hotelId,
+    });
+    console.log(HotelExists);
+    if (HotelExists) {
+      try {
+        const { data } = await Axios.get(
+          `http://localhost:5000/hotel/${hotelId}/stats?from=${from}&to=${to}`
+        );
+        let result = {
+          K: true,
+          KAC: true,
+          D: true,
+          DAC: true,
+          S: true,
+          SAC: true,
+        };
+        // res.send(data);
+        for (let i = 0; i < data.length; i++) {
+          let curr = data[i];
+          let key = Object.keys(curr)[0];
 
-*/
-module.exports = { getAllHotels, getHotelById, getHotelBookings };
+          console.log(key);
+          result = {
+            K: result.K && curr[key]["K"] < HotelExists["K"].count,
+            KAC: result.KAC && curr[key]["KAC"] < HotelExists["KAC"].count,
+            D: result.D && curr[key]["D"] < HotelExists["D"].count,
+            DAC: result.DAC && curr[key]["DAC"] < HotelExists["DAC"].count,
+            S: result.S && curr[key]["S"] < HotelExists["S"].count,
+            SAC: result.SAC && curr[key]["SAC"] < HotelExists["SAC"].count,
+          };
+        }
+        res.send(result);
+      } catch (err) {
+        console.log(err);
+        throw new CustomError("No Hotel with such Id exist", 400);
+      }
+    } else {
+      // console.log(HotelExists);
+      throw new CustomError("No Hotel with such Id exist", 400);
+    }
+  } catch (err) {
+    console.log(err);
+    throw new CustomError("No Hotel with such Id exist", 400);
+  }
+});
+
+module.exports = {
+  getAllHotels,
+  getHotelById,
+  getHotelBookings,
+  isBookAllowed,
+};
