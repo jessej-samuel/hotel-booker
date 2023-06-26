@@ -5,11 +5,12 @@ const {
   getAllHotels,
   getHotelById,
   getHotelBookings,
+  isBookAllowed,
 } = require("../controllers/hotel");
 
 router.route("").get(getAllHotels);
-
-router.route("/:hotelId/order").get(getHotelBookings);
+router.route("/:hotelId/stats").get(getHotelBookings);
+router.route("/:hotelId/order").get(isBookAllowed);
 router.route("/:hotelId").get(getHotelById);
 
 module.exports = router;
