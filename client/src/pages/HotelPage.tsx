@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import ServerAPI from "../api/ServerAPI";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import useAuth from "../utils/hooks";
 
 type HotelMetaData = {
   _id: string;
@@ -46,6 +47,7 @@ type HotelMetaData = {
 };
 
 const HotelPage = () => {
+  useAuth();
   const { id } = useParams();
   const [total, setTotal] = useState(0);
   const [roomType, setRoomType] = useState(
@@ -111,7 +113,7 @@ const HotelPage = () => {
       setTotal(days * hotelMetaData[roomType].cost);
       console.log(total);
     }
-  }, [from, to, roomType, total]);
+  }, [from, to, roomType, total, hotelMetaData]);
 
   const handleFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFrom(e.target.value);
@@ -177,6 +179,7 @@ const HotelPage = () => {
         combines warm hospitality with a lovely ambiance to make your stay in
         Atlantis unforgettable.
       </p>
+      <p className="mt-2"></p>
       <h1 className="text-2xl font-bold my-4">Book a Room</h1>
       <div className="flex justify-between items-end">
         <form className="w-96" ref={formRef}>

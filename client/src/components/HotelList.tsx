@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import ServerAPI from "../api/ServerAPI";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../utils/hooks";
 
 interface HotelType {
   name: string;
@@ -11,6 +12,7 @@ interface HotelType {
 
 const HotelList: React.FC = () => {
   const [hotels, setHotels] = useState<HotelType[]>([]);
+  useAuth();
   useEffect(() => {
     ServerAPI.get("/hotel").then((res) => setHotels(res.data));
   }, []);
