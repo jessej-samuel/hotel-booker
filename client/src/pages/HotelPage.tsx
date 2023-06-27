@@ -144,9 +144,14 @@ const HotelPage = () => {
 
   const handleToChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    if (e.target.value < from) {
+    if (e.target.value <= from) {
       alert("Please select a date after the start date");
-      setTo(to);
+      setTo(
+        // set to date to next day of from
+        new Date(new Date(from).getTime() + 24 * 60 * 60 * 1000)
+          .toISOString()
+          .slice(0, 10)
+      );
     } else setTo(e.target.value);
   };
 
@@ -179,11 +184,21 @@ const HotelPage = () => {
     e: { target: { value: string } },
     key: string
   ) => {
+    console.log(e.target.value);
     const newValue = parseInt(e.target.value);
-    if (newValue > 0 && newValue <= roomAvailability[key]) {
+    if (newValue >= 0 && newValue <= roomAvailability[key]) {
       setOrderDetails({
         ...orderDetails,
         [key]: { count: parseInt(e.target.value) },
+      });
+    } else if (
+      newValue === undefined ||
+      newValue === null ||
+      e.target.value === ""
+    ) {
+      setOrderDetails({
+        ...orderDetails,
+        [key]: { count: 0 },
       });
     }
   };
@@ -301,7 +316,7 @@ const HotelPage = () => {
                       max={roomAvailability.SAC}
                       value={orderDetails.SAC.count}
                       onChange={(e) => handleOrderCountChange(e, "SAC")}
-                      className="w-24 border p-2 rounded-md"
+                      className="w-24 border p-2 rounded-md out-of-range:border-red-500 out-of-range:border-2 out-of-range:focus:outline-red-500"
                     />
                   </td>
                 </tr>
@@ -317,7 +332,7 @@ const HotelPage = () => {
                       max={roomAvailability.D}
                       value={orderDetails.D.count}
                       onChange={(e) => handleOrderCountChange(e, "D")}
-                      className="w-24 border p-2 rounded-md"
+                      className="w-24 border p-2 rounded-md out-of-range:border-red-500 out-of-range:border-2 out-of-range:focus:outline-red-500"
                     />
                   </td>
                 </tr>
@@ -333,7 +348,7 @@ const HotelPage = () => {
                       max={roomAvailability.DAC}
                       value={orderDetails.DAC.count}
                       onChange={(e) => handleOrderCountChange(e, "DAC")}
-                      className="w-24 border p-2 rounded-md"
+                      className="w-24 border p-2 rounded-md out-of-range:border-red-500 out-of-range:border-2 out-of-range:focus:outline-red-500"
                     />
                   </td>
                 </tr>
@@ -349,7 +364,7 @@ const HotelPage = () => {
                       max={roomAvailability.K}
                       value={orderDetails.K.count}
                       onChange={(e) => handleOrderCountChange(e, "K")}
-                      className="w-24 border p-2 rounded-md"
+                      className="w-24 border p-2 rounded-md out-of-range:border-red-500 out-of-range:border-2 out-of-range:focus:outline-red-500"
                     />
                   </td>
                 </tr>
@@ -365,7 +380,7 @@ const HotelPage = () => {
                       max={roomAvailability.KAC}
                       value={orderDetails.KAC.count}
                       onChange={(e) => handleOrderCountChange(e, "KAC")}
-                      className="w-24 border p-2 rounded-md"
+                      className="w-24 border p-2 rounded-md out-of-range:border-red-500 out-of-range:border-2 out-of-range:focus:outline-red-500"
                     />
                   </td>
                 </tr>
