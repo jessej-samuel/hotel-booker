@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../utils/hooks";
 
 const Navbar = () => {
   const [showLogout, setShowLogout] = useState(false);
