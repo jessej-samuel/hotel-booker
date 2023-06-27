@@ -4,141 +4,188 @@ import ServerAPI from "../api/ServerAPI";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import useAuth from "../utils/hooks";
-
-type HotelMetaData = {
-  _id: string;
-  name: string;
-  location: string;
-  email: string;
-  password: string;
-  K: {
-    count: number;
-    cost: number;
-    _id: string;
-  };
-  KAC: {
-    count: number;
-    cost: number;
-    _id: string;
-  };
-  D: {
-    count: number;
-    cost: number;
-    _id: string;
-  };
-  DAC: {
-    count: number;
-    cost: number;
-    _id: string;
-  };
-  S: {
-    count: number;
-    cost: number;
-    _id: string;
-  };
-  SAC: {
-    count: number;
-    cost: number;
-    _id: string;
-  };
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-};
+import { HotelMetaData } from "../utils/types";
 
 const HotelPage = () => {
-  useAuth();
+  const userData = useAuth();
   const { id } = useParams();
+
   const [total, setTotal] = useState(0);
-  const [roomType, setRoomType] = useState(
-    "K" as "K" | "KAC" | "D" | "DAC" | "S" | "SAC"
-  );
+  const [roomAvailability, setRoomAvailability] = useState({
+    K: 0,
+    KAC: 0,
+    D: 0,
+    DAC: 0,
+    S: 0,
+    SAC: 0,
+  });
   const [from, setFrom] = useState(new Date().toISOString().slice(0, 10));
   const [to, setTo] = useState(new Date().toISOString().slice(0, 10));
   const [hotelMetaData, setHotelMetaData] = useState({
-    _id: "64941e6f5077923fadc8beb4",
-    name: "Dani",
-    location: "Atlantis",
-    email: "dani@gmail.com",
-    password: "dani",
+    _id: "",
+    name: "",
+    location: "",
+    email: "",
+    password: "",
     K: {
-      count: 10,
-      cost: 1000,
-      _id: "64941e6f5077923fadc8beb5",
+      count: 0,
+      cost: 0,
+      _id: "",
     },
     KAC: {
       count: 0,
       cost: 0,
-      _id: "64941e6f5077923fadc8beaf",
+      _id: "",
     },
     D: {
       count: 0,
       cost: 0,
-      _id: "64941e6f5077923fadc8beb0",
+      _id: "",
     },
     DAC: {
       count: 0,
       cost: 0,
-      _id: "64941e6f5077923fadc8beb1",
+      _id: "",
     },
     S: {
       count: 0,
       cost: 0,
-      _id: "64941e6f5077923fadc8beb2",
+      _id: "",
     },
     SAC: {
       count: 0,
       cost: 0,
-      _id: "64941e6f5077923fadc8beb3",
+      _id: "",
     },
     createdAt: "2023-06-22T10:11:59.417Z",
     updatedAt: "2023-06-22T10:11:59.417Z",
     __v: 0,
   } as HotelMetaData);
 
+  const [ableToBook, setAbleToBook] = useState(true);
+
+  const [orderDetails, setOrderDetails] = useState({
+    userId: "",
+    username: "",
+    hotelId: "",
+    from: new Date().toISOString().slice(0, 10),
+    to: new Date().toISOString().slice(0, 10),
+    K: {
+      count: 0,
+    },
+    KAC: {
+      count: 0,
+    },
+    D: {
+      count: 0,
+    },
+    DAC: {
+      count: 0,
+    },
+    S: {
+      count: 0,
+    },
+    SAC: {
+      count: 0,
+    },
+  });
+
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     ServerAPI.get(`/hotel/${id}`).then((response) => {
       setHotelMetaData(response.data);
+      console.log("Hotel Metadata", response.data);
+      setOrderDetails((prev) => ({
+        ...prev,
+        hotelId: response.data._id,
+      }));
     });
   }, [id]);
 
   useEffect(() => {
-    if (from && to) {
-      const fromTime = new Date(from).getTime();
-      const toTime = new Date(to).getTime();
-      const diff = toTime - fromTime;
-      const days = diff / (1000 * 60 * 60 * 24);
-      setTotal(days * hotelMetaData[roomType].cost);
-      console.log(total);
-    }
-  }, [from, to, roomType, total, hotelMetaData]);
+    ServerAPI.get(`/hotel/${id}/availability`, {
+      params: {
+        from,
+        to,
+      },
+    }).then((response) => {
+      console.log("Room Availabilty", response.data);
+      setRoomAvailability(response.data);
+    });
+  }, [id, from, to]);
+
+  // Update total cost on room count change
+  useEffect(() => {
+    const fromDate = new Date(from);
+    const toDate = new Date(to);
+    console.log("From", fromDate);
+    console.log("To", toDate);
+    const diff = toDate.getTime() - fromDate.getTime();
+    console.log("Diff", diff);
+    const days = diff / (1000 * 3600 * 24);
+    let total = 0;
+    total += orderDetails.K.count * hotelMetaData.K.cost * days;
+    total += orderDetails.KAC.count * hotelMetaData.KAC.cost * days;
+    total += orderDetails.D.count * hotelMetaData.D.cost * days;
+    total += orderDetails.DAC.count * hotelMetaData.DAC.cost * days;
+    total += orderDetails.S.count * hotelMetaData.S.cost * days;
+    total += orderDetails.SAC.count * hotelMetaData.SAC.cost * days;
+    console.log("Total", total);
+    console.log("Days", days);
+    console.log("Order Details", orderDetails);
+
+    setTotal(total);
+  }, [orderDetails, hotelMetaData, from, to]);
 
   const handleFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFrom(e.target.value);
   };
 
   const handleToChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
     if (e.target.value < from) {
       alert("Please select a date after the start date");
-      return;
-    }
-    setTo(e.target.value);
-  };
-
-  const handleRoomTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setRoomType(e.target.value as any);
+      setTo(to);
+    } else setTo(e.target.value);
   };
 
   const handleBookNowClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log({
+    setAbleToBook(false);
+    const orderData = {
+      ...orderDetails,
+      userId: userData._id,
+      userName: userData.name,
       hotelId: id,
-      roomType,
-      from,
-      to,
-    });
+      fromDate: from,
+      toDate: to,
+    };
+
+    ServerAPI.post(`/order/${hotelMetaData._id}`, orderData)
+      .then((response) => {
+        console.log(response.data);
+        setAbleToBook(true);
+        alert("Order Placed Successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+        setAbleToBook(true);
+        alert("Order Placed Failed");
+      });
+  };
+
+  const handleOrderCountChange = (
+    e: { target: { value: string } },
+    key: string
+  ) => {
+    const newValue = parseInt(e.target.value);
+    if (newValue > 0 && newValue <= roomAvailability[key]) {
+      setOrderDetails({
+        ...orderDetails,
+        [key]: { count: parseInt(e.target.value) },
+      });
+    }
   };
 
   return (
@@ -189,6 +236,7 @@ const HotelPage = () => {
             </label>
             <input
               type="date"
+              value={from}
               defaultValue={from}
               onChange={handleFromChange}
               className="border border-gray-300 rounded-md p-2"
@@ -200,33 +248,129 @@ const HotelPage = () => {
             </label>
             <input
               type="date"
+              value={to}
               defaultValue={to}
               onChange={handleToChange}
               className="border border-gray-300 rounded-md p-2"
             />
           </div>
           <div className="flex flex-col mt-4">
-            <label className="text-sm mb-2 text-gray-600 uppercase font-medium">
-              Room Type
-            </label>
-            <select
-              className="border border-gray-300 rounded-md p-2"
-              onChange={handleRoomTypeChange}
-            >
-              <option value="K">King (${hotelMetaData.K.cost})</option>
-              <option value="KAC">
-                {" "}
-                King with AC (${hotelMetaData.KAC.cost})
-              </option>
-              <option value="D">Double (${hotelMetaData.D.cost})</option>
-              <option value="DAC">
-                Double with AC (${hotelMetaData.DAC.cost})
-              </option>
-              <option value="S">Suite (${hotelMetaData.S.cost})</option>
-              <option value="SAC">
-                Suite with AC (${hotelMetaData.SAC.cost})
-              </option>
-            </select>
+            <table>
+              <thead>
+                <tr>
+                  <th className="pb-3 text-left text-sm uppercase font-medium">
+                    Room Type
+                  </th>
+                  <th className="pb-3 font-medium text-sm uppercase text-right">
+                    Cost
+                  </th>
+                  <th className="pb-3 text-right text-sm uppercase font-medium">
+                    Available
+                  </th>
+                  <th className="pb-3 text-right text-sm uppercase font-medium">
+                    Select
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="text-left">Single (1 bed)</td>
+                  <td className="text-right">{hotelMetaData.S.cost}</td>
+                  <td className="text-right">{roomAvailability.S}</td>
+                  <td className="text-right">
+                    <input
+                      type="number"
+                      min="0"
+                      name="S"
+                      max={roomAvailability.S}
+                      value={orderDetails.S.count}
+                      onChange={(e) => handleOrderCountChange(e, "S")}
+                      className="w-24 border p-2 rounded-md out-of-range:border-red-500 out-of-range:border-2 out-of-range:focus:outline-red-500"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td className="text-left">Single AC (1 bed)</td>
+                  <td className="text-right">{hotelMetaData.SAC.cost}</td>
+                  <td className="text-right">{roomAvailability.SAC}</td>
+                  <td className="text-right">
+                    <input
+                      type="number"
+                      min="0"
+                      name="SAC"
+                      max={roomAvailability.SAC}
+                      value={orderDetails.SAC.count}
+                      onChange={(e) => handleOrderCountChange(e, "SAC")}
+                      className="w-24 border p-2 rounded-md"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td className="text-left">Double (2 beds)</td>
+                  <td className="text-right">{hotelMetaData.D.cost}</td>
+                  <td className="text-right">{roomAvailability.D}</td>
+                  <td className="text-right">
+                    <input
+                      type="number"
+                      min="0"
+                      name="D"
+                      max={roomAvailability.D}
+                      value={orderDetails.D.count}
+                      onChange={(e) => handleOrderCountChange(e, "D")}
+                      className="w-24 border p-2 rounded-md"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td className="text-left">Double AC (2 beds)</td>
+                  <td className="text-right">{hotelMetaData.DAC.cost}</td>
+                  <td className="text-right">{roomAvailability.DAC}</td>
+                  <td className="text-right">
+                    <input
+                      type="number"
+                      min="0"
+                      name="DAC"
+                      max={roomAvailability.DAC}
+                      value={orderDetails.DAC.count}
+                      onChange={(e) => handleOrderCountChange(e, "DAC")}
+                      className="w-24 border p-2 rounded-md"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td className="text-left">King (4 beds)</td>
+                  <td className="text-right">{hotelMetaData.K.cost}</td>
+                  <td className="text-right">{roomAvailability.K}</td>
+                  <td className="text-right">
+                    <input
+                      type="number"
+                      min="0"
+                      name="K"
+                      max={roomAvailability.K}
+                      value={orderDetails.K.count}
+                      onChange={(e) => handleOrderCountChange(e, "K")}
+                      className="w-24 border p-2 rounded-md"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td className="text-left">King AC (4 beds)</td>
+                  <td className="text-right">{hotelMetaData.KAC.cost}</td>
+                  <td className="text-right">{roomAvailability.KAC}</td>
+                  <td className="text-right">
+                    <input
+                      type="number"
+                      min="0"
+                      name="KAC"
+                      max={roomAvailability.KAC}
+                      value={orderDetails.KAC.count}
+                      onChange={(e) => handleOrderCountChange(e, "KAC")}
+                      className="w-24 border p-2 rounded-md"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </form>
         <div className="flex items-baseline gap-x-4">

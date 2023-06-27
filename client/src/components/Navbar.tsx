@@ -5,7 +5,6 @@ import useAuth from "../utils/hooks";
 const Navbar = () => {
   const [showLogout, setShowLogout] = useState(false);
   const navigate = useNavigate();
-  useAuth();
   const logout = () => {
     localStorage.removeItem("userData");
     navigate("/");
