@@ -9,9 +9,15 @@ const useAuth = () => {
   });
 
   useEffect(() => {
-    const userData = localStorage.getItem("userData");
+    const userData =
+      JSON.parse(localStorage.getItem("userData") || "{}") || undefined;
+    const path = window.location.pathname;
+    if (path === "/hotel/login" && userData.type === "hotel")
+      navigate("/dashboard");
+    else if (path === "/user/login" && userData.type === "user")
+      navigate("/dashboard");
     if (!userData) navigate("/");
-    else setUserData(JSON.parse(userData));
+    else setUserData(userData);
   }, [navigate]);
 
   return userData;

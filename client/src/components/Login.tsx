@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ServerAPI from "../api/ServerAPI";
+import useAuth from "../utils/hooks";
 
 const Login = () => {
   const [who, setWho] = useState("user");
+  useAuth();
 
   const navigate = useNavigate();
 
