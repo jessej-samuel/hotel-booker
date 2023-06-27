@@ -132,7 +132,7 @@ const isBookAllowed = asyncHandler(async (req, res) => {
           let curr = data[i];
           let key = Object.keys(curr)[0];
 
-          console.log(key);
+          // console.log(key);
           result = {
             K: Math.min(result.K, HotelExists["K"].count - curr[key]["K"]),
             KAC: Math.min(

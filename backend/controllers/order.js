@@ -27,7 +27,7 @@ const orderHotel = asyncHandler(async (req, res) => {
     const { data } = await Axios.get(
       `http://localhost:5000/hotel/${hotelId}/availability?from=${fromDate}&to=${toDate}`
     );
-    console.log(data);
+    // console.log(data);
     if (
       (K && K.count > data.K) ||
       (KAC && KAC.count > data.KAC) ||
