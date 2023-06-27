@@ -39,4 +39,8 @@ type HotelMetaData = {
   __v: number;
 };
 
-export type { HotelMetaData };
+type RoomAvailabilityType = {
+  [key: string]: number;
+};
+
+export type { HotelMetaData, RoomAvailabilityType };

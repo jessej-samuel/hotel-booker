@@ -4,7 +4,7 @@ import ServerAPI from "../api/ServerAPI";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import useAuth from "../utils/hooks";
-import { HotelMetaData } from "../utils/types";
+import { HotelMetaData, RoomAvailabilityType } from "../utils/types";
 
 const HotelPage = () => {
   const userData = useAuth();
@@ -18,7 +18,7 @@ const HotelPage = () => {
     DAC: 0,
     S: 0,
     SAC: 0,
-  });
+  } as RoomAvailabilityType);
   const [from, setFrom] = useState(new Date().toISOString().slice(0, 10));
   const [to, setTo] = useState(new Date().toISOString().slice(0, 10));
   const [hotelMetaData, setHotelMetaData] = useState({
@@ -186,7 +186,8 @@ const HotelPage = () => {
   ) => {
     console.log(e.target.value);
     const newValue = parseInt(e.target.value);
-    if (newValue >= 0 && newValue <= roomAvailability[key]) {
+    const maxValue = roomAvailability[key] || 0;
+    if (newValue >= 0 && newValue <= maxValue) {
       setOrderDetails({
         ...orderDetails,
         [key]: { count: parseInt(e.target.value) },

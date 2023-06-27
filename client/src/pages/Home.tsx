@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Link, Router } from "react-router-dom";
+import useAuth from "../utils/hooks";
 
 const HomePage = () => {
+  useAuth();
   const [loggedIn, setLoggedIn] = useState({
     login: localStorage.getItem("login") || false,
   });
