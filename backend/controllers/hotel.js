@@ -113,19 +113,19 @@ const isBookAllowed = asyncHandler(async (req, res) => {
     const HotelExists = await HotelModel.findById({
       _id: hotelId,
     });
-    console.log(HotelExists);
+    // console.log(HotelExists);
     if (HotelExists) {
       try {
         const { data } = await Axios.get(
           `http://localhost:5000/hotel/${hotelId}/stats?from=${from}&to=${to}`
         );
         let result = {
-          K: true,
-          KAC: true,
-          D: true,
-          DAC: true,
-          S: true,
-          SAC: true,
+          K: HotelExists["K"].count,
+          KAC: HotelExists["KAC"].count,
+          D: HotelExists["D"].count,
+          DAC: HotelExists["DAC"].count,
+          S: HotelExists["S"].count,
+          SAC: HotelExists["SAC"].count,
         };
         // res.send(data);
         for (let i = 0; i < data.length; i++) {
@@ -134,15 +134,24 @@ const isBookAllowed = asyncHandler(async (req, res) => {
 
           console.log(key);
           result = {
-            K: result.K && curr[key]["K"] < HotelExists["K"].count,
-            KAC: result.KAC && curr[key]["KAC"] < HotelExists["KAC"].count,
-            D: result.D && curr[key]["D"] < HotelExists["D"].count,
-            DAC: result.DAC && curr[key]["DAC"] < HotelExists["DAC"].count,
-            S: result.S && curr[key]["S"] < HotelExists["S"].count,
-            SAC: result.SAC && curr[key]["SAC"] < HotelExists["SAC"].count,
+            K: Math.min(result.K, HotelExists["K"].count - curr[key]["K"]),
+            KAC: Math.min(
+              result.KAC,
+              HotelExists["KAC"].count - curr[key]["KAC"]
+            ),
+            D: Math.min(result.D, HotelExists["D"].count - curr[key].D),
+            DAC: Math.min(
+              result.DAC,
+              HotelExists["DAC"].count - curr[key]["DAC"]
+            ),
+            S: Math.min(result.S, HotelExists["S"].count - curr[key].S),
+            SAC: Math.min(
+              result.SAC,
+              HotelExists["SAC"].count - curr[key]["SAC"]
+            ),
           };
         }
-        res.send(result);
+        res.status(200).send(result);
       } catch (err) {
         console.log(err);
         throw new CustomError("No Hotel with such Id exist", 400);
@@ -152,7 +161,7 @@ const isBookAllowed = asyncHandler(async (req, res) => {
       throw new CustomError("No Hotel with such Id exist", 400);
     }
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     throw new CustomError("No Hotel with such Id exist", 400);
   }
 });
