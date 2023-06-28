@@ -58,7 +58,7 @@ const Navbar = () => {
     );
   };
   return (
-    <nav className="flex justify-between items-center h-16 bg-blue-50 text-black relative border-b shadow-md font-mono ">
+    <nav className="flex sticky top-0 justify-between items-center h-16 z-50 bg-blue-50 text-black border-b shadow-md font-mono ">
       <a href="/" className="pl-8">
         Hotel Booking
       </a>
