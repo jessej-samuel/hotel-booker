@@ -166,9 +166,26 @@ const isBookAllowed = asyncHandler(async (req, res) => {
   }
 });
 
+const getHotelOrders = asyncHandler(async (req, res) => {
+  const { hotelId } = req.params;
+  if (!hotelId) {
+    throw new CustomError("Please specify the required fields", 400);
+  }
+  try {
+    const Orders = await OrderModel.find({
+      hotelId,
+    });
+    // console.log(Orders);
+    res.status(200).send(Orders);
+  } catch (err) {
+    throw new CustomError(err.message, 400);
+  }
+});
+
 module.exports = {
   getAllHotels,
   getHotelById,
   getHotelBookings,
   isBookAllowed,
+  getHotelOrders,
 };
