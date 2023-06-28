@@ -1,3 +1,4 @@
+import { BiLogOut } from "react-icons/bi";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -34,6 +35,7 @@ const Navbar = () => {
             hidden={!showLogout}
             onClick={logout}
           >
+            <BiLogOut className="inline-block mr-2" />
             Logout
           </div>
         </div>
@@ -56,7 +58,7 @@ const Navbar = () => {
     );
   };
   return (
-    <nav className="flex justify-between items-center h-16 bg-white text-black relative border-b shadow-sm font-mono">
+    <nav className="flex justify-between items-center h-16 bg-blue-50 text-black relative border-b shadow-md font-mono ">
       <a href="/" className="pl-8">
         Hotel Booking
       </a>
