@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import HotelList from "../components/HotelList";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../utils/hooks";
 
 const Dashboard = () => {
   const [userData, setUserData] = useState({
@@ -8,6 +9,7 @@ const Dashboard = () => {
     email: "",
     id: "",
   });
+  useAuth();
   const navigate = useNavigate();
   useEffect(() => {
     setUserData(
