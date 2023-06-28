@@ -27,7 +27,7 @@ const orderHotel = asyncHandler(async (req, res) => {
       throw new CustomError("No such hotel exists!", 400);
     }
     const { data } = await Axios.get(
-      `http://localhost:5000/hotel/${hotelId}/availability?from=${fromDate}&to=${toDate}`
+      `${process.env.BASE_URL}/hotel/${hotelId}/availability?from=${fromDate}&to=${toDate}`
     );
     // console.log(data);
     if (

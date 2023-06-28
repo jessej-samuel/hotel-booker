@@ -117,7 +117,7 @@ const isBookAllowed = asyncHandler(async (req, res) => {
     if (HotelExists) {
       try {
         const { data } = await Axios.get(
-          `http://localhost:5000/hotel/${hotelId}/stats?from=${from}&to=${to}`
+          `${process.env.BASE_URL}/hotel/${hotelId}/stats?from=${from}&to=${to}`
         );
         let result = {
           K: HotelExists["K"].count,
