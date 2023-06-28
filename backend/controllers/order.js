@@ -14,7 +14,9 @@ const orderHotel = asyncHandler(async (req, res) => {
     if (!userId || !userName || !hotelId || !fromDate || !toDate) {
       throw new CustomError("Please specify the required fields", 400);
     }
-
+    if (new Date(fromDate) < new Date() || new Date(toDate) < new Date()) {
+      throw new CustomError("Invalid dates", 401);
+    }
     try {
       const HotelExists = await HotelModel.findOne({
         _id: hotelId,
