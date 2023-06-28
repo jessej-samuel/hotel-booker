@@ -5,6 +5,7 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import useAuth from "../utils/hooks";
 import { HotelMetaData, RoomAvailabilityType } from "../utils/types";
+import { toast } from "react-hot-toast";
 
 const HotelPage = () => {
   const userData = useAuth();
@@ -119,8 +120,8 @@ const HotelPage = () => {
   useEffect(() => {
     const fromDate = new Date(from);
     const toDate = new Date(to);
-    console.log("From", fromDate);
-    console.log("To", toDate);
+    console.log("From", from);
+    console.log("To", to);
     const diff = toDate.getTime() - fromDate.getTime();
     console.log("Diff", diff);
     const days = diff / (1000 * 3600 * 24);
@@ -171,12 +172,33 @@ const HotelPage = () => {
       .then((response) => {
         console.log(response.data);
         setAbleToBook(true);
-        alert("Order Placed Successfully");
+        setOrderDetails({
+          ...orderDetails,
+          K: {
+            count: 0,
+          },
+          KAC: {
+            count: 0,
+          },
+          D: {
+            count: 0,
+          },
+          DAC: {
+            count: 0,
+          },
+          S: {
+            count: 0,
+          },
+          SAC: {
+            count: 0,
+          },
+        });
+        toast.success("Order Placed Successfully");
       })
       .catch((err) => {
         console.log(err);
         setAbleToBook(true);
-        alert("Order Placed Failed");
+        toast.error(err.response.data.msg);
       });
   };
 

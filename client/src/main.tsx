@@ -10,6 +10,7 @@ import UserRegister from "./components/UserRegister.tsx";
 import HotelRegister from "./components/HotelRegister.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import HotelPage from "./pages/HotelPage.tsx";
+import OrderHistoryPage from "./pages/OrderHistory.tsx";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: "/hotel/:id",
         element: <HotelPage />,
+      },
+      {
+        path: "/orders",
+        element: <OrderHistoryPage />,
       },
     ],
   },
