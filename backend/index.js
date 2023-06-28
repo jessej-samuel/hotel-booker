@@ -16,6 +16,7 @@ const sampleRoutes = require("./routes/sample");
 const authRoutes = require("./routes/auth");
 const orderRoutes = require("./routes/order");
 const hotelRoutes = require("./routes/hotel");
+const userRoutes = require("./routes/user");
 
 app.use(cors());
 app.use(express.json());
@@ -26,6 +27,7 @@ app.use("/sample", sampleRoutes);
 app.use("/auth", authRoutes);
 app.use("/order", orderRoutes);
 app.use("/hotel", hotelRoutes);
+app.use("/user", userRoutes);
 
 //error handling
 app.use(errorHandler);
