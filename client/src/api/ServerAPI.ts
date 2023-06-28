@@ -2,6 +2,10 @@ import axios from "axios";
 
 const ServerAPI = axios.create({
   baseURL: import.meta.env.VITE_APP_API_URL,
+  headers: {
+    // cors
+    "Access-Control-Allow-Origin": "*",
+  },
 });
 
 export default ServerAPI;
