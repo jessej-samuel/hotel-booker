@@ -174,7 +174,7 @@ const getHotelOrders = asyncHandler(async (req, res) => {
   try {
     const Orders = await OrderModel.find({
       hotelId,
-    });
+    }).populate("hotelId", "-password");
     // console.log(Orders);
     res.status(200).send(Orders);
   } catch (err) {
