@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ServerAPI from "../api/ServerAPI";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../utils/hooks";
+import AdminDashboard from "../pages/AdminDashboard";
 
 interface HotelType {
   name: string;
@@ -33,8 +34,8 @@ const HotelList: React.FC = () => {
         ))}
       </div>
     );
+  return <AdminDashboard />;
 };
-return <AdminDashboard />;
 
 const HotelCard = ({ name, location, imageLink, id }: HotelType) => {
   const navigate = useNavigate();
