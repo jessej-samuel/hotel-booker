@@ -12,7 +12,7 @@ const getOrderHistory = asyncHandler(async (req, res) => {
       const Orders = await OrderModel.find({
         userId,
       }).populate("hotelId");
-      console.log(Orders);
+      // console.log(Orders);
       res.status(200).send(Orders);
     } catch (error) {
       throw new CustomError("No such user exists!", 400);
