@@ -24,7 +24,7 @@ const Navbar = () => {
             className="flex items-center gap-x-3 cursor-pointer "
             onClick={() => setShowLogout((s) => !s)}
           >
-            <p onSelect={(e) => e.preventDefault()}>{userData.name}</p>
+            <p onSelect={(e) => e.preventDefault()}>{userData.username}</p>
             <img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRA7UbmM2x9QWw6Sga9Cc4x2INxD5MwiyhvxjWNKjuyxz3gAwcjM1kLab-vRfsmypHx1JE&usqp=CAU"
               className="aspect-square w-10 rounded-full"

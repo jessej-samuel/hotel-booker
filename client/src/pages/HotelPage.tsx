@@ -159,10 +159,11 @@ const HotelPage = () => {
   const handleBookNowClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setAbleToBook(false);
+    alert(JSON.stringify(userData));
     const orderData = {
       ...orderDetails,
       userId: userData._id,
-      userName: userData.name,
+      userName: userData.username,
       hotelId: id,
       fromDate: from,
       toDate: to,
@@ -193,6 +194,7 @@ const HotelPage = () => {
             count: 0,
           },
         });
+        console.log(orderDetails);
         toast.success("Order Placed Successfully");
       })
       .catch((err) => {

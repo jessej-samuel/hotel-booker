@@ -5,12 +5,12 @@ const useAuth = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState({
     _id: "",
-    name: "",
+    username: "",
     type: "",
   });
 
   useEffect(() => {
-    const userData =
+    const user =
       JSON.parse(localStorage.getItem("userData") || "{}") || undefined;
     const path = window.location.pathname;
 
@@ -20,7 +20,7 @@ const useAuth = () => {
       navigate("/dashboard");
     if (!userData || userData === undefined) navigate("/");
     else if (path === "/" && userData.type != "") navigate("/dashboard");
-    else setUserData(userData);
+    else setUserData(user);
   }, [navigate]);
 
   return userData;
