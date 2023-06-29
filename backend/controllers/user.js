@@ -11,7 +11,7 @@ const getOrderHistory = asyncHandler(async (req, res) => {
     try {
       const Orders = await OrderModel.find({
         userId,
-      }).populate("hotelId");
+      }).populate("hotelId", "-password");
       // console.log(Orders);
       res.status(200).send(Orders);
     } catch (error) {
