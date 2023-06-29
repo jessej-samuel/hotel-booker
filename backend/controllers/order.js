@@ -14,7 +14,8 @@ const orderHotel = asyncHandler(async (req, res) => {
     if (!userId || !userName || !hotelId || !fromDate || !toDate) {
       throw new CustomError("Please specify the required fields", 400);
     }
-    if (new Date(fromDate) < new Date() || new Date(toDate) < new Date()) {
+    let yesterday = new Date(new Date().valueOf() - 1000 * 60 * 60 * 24);
+    if (new Date(fromDate) < yesterday || new Date(toDate) < yesterday) {
       throw new CustomError("Invalid dates", 401);
     }
     try {

@@ -1,0 +1,18 @@
+{
+  "name": "hotel-booker",
+  "version": "1.0.0",
+  "description": "This is the app used to allot hotel in specified slots",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cd backend && yarn && cd ../client && yarn && yarn run build",
+    "backend": "npm run dev --prefix backend",
+    "client": "npm run dev --prefix client",
+    "dev": "concurrently \"npm run backend\" \"npm run client\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
