@@ -12,28 +12,29 @@ interface HotelType {
 
 const HotelList: React.FC = () => {
   const [hotels, setHotels] = useState<HotelType[]>([]);
-  useAuth();
+  const user = useAuth();
   useEffect(() => {
     ServerAPI.get("/hotel").then((res) => setHotels(res.data));
   }, []);
-
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4 xl:grid-cols-4 w-full place-items-center grid-flow-row">
-      {hotels.map((hotel: HotelType) => (
-        <HotelCard
-          name={hotel.name}
-          location={hotel.location}
-          imageLink={
-            hotel.imageLink ||
-            "https://media.istockphoto.com/id/104731717/photo/luxury-resort.jpg?s=612x612&w=0&k=20&c=cODMSPbYyrn1FHake1xYz9M8r15iOfGz9Aosy9Db7mI="
-          }
-          key={hotel.id}
-          id={hotel.id}
-        />
-      ))}
-    </div>
-  );
+  if (user.type === "user")
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4 xl:grid-cols-4 w-full place-items-center grid-flow-row mt-8">
+        {hotels.map((hotel: HotelType) => (
+          <HotelCard
+            name={hotel.name}
+            location={hotel.location}
+            imageLink={
+              hotel.imageLink ||
+              "https://media.istockphoto.com/id/104731717/photo/luxury-resort.jpg?s=612x612&w=0&k=20&c=cODMSPbYyrn1FHake1xYz9M8r15iOfGz9Aosy9Db7mI="
+            }
+            key={hotel.id}
+            id={hotel.id}
+          />
+        ))}
+      </div>
+    );
 };
+return <AdminDashboard />;
 
 const HotelCard = ({ name, location, imageLink, id }: HotelType) => {
   const navigate = useNavigate();

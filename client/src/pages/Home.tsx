@@ -1,8 +1,16 @@
-import { Link } from "react-router-dom";
-import useAuth from "../utils/hooks";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const HomePage = () => {
-  useAuth();
+  const navigate = useNavigate();
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+    if (userData.type)
+      navigate("/dashboard", {
+        replace: true,
+      });
+  }, []);
+
   return (
     <div className="max-w-md mx-auto h-96 flex flex-col gap-8 justify-center items-center transition-all ">
       <Link
