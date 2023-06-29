@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { OrderAdminType } from "../utils/types";
 import ServerAPI from "../api/ServerAPI";
 import { useEffect, useState } from "react";
@@ -56,7 +55,7 @@ const AdminDashboard = () => {
     const diff = Math.abs(
       new Date(order.toDate).getTime() - new Date(order.fromDate).getTime()
     );
-    orderTotal = Math.round((orderTotal + Number.EPSILON) * 100) / 100;
+    orderTotal = Math.ceil(diff / (1000 * 60 * 60 * 24)) * orderTotal;
     return { roomString: rooms, total: orderTotal };
   };
   return (
