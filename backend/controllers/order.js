@@ -62,4 +62,19 @@ const orderHotel = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { orderHotel };
+const deleteOrder = asyncHandler(async (req, res) => {
+  const { orderId } = req.params;
+
+  if (!orderId) {
+    throw new CustomError("Please specify the orderId to delete", 400);
+  }
+
+  const result = await OrderModel.deleteOne({
+    _id: orderId,
+  });
+  // console.log(result);
+  if (result.deletedCount) res.status(200).send("Order deleted successfully!");
+  else throw new CustomError("No such order exist", 400);
+});
+
+module.exports = { orderHotel, deleteOrder };
