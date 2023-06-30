@@ -3,6 +3,7 @@ import ServerAPI from "../api/ServerAPI";
 import { useEffect, useState } from "react";
 import useAuth from "../utils/hooks";
 import { FaTrash } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 const AdminDashboard = () => {
   const userData = useAuth();
@@ -31,26 +32,26 @@ const AdminDashboard = () => {
     if (order.S.count > 0) {
       orderTotal += order.S.count * order.hotelId.S.cost;
       rooms === ""
-        ? (rooms += `${order.S.count}Q`)
-        : (rooms += `+ ${order.S.count}Q`);
+        ? (rooms += `${order.S.count}S`)
+        : (rooms += `+ ${order.S.count}S`);
     }
     if (order.DAC.count > 0) {
       orderTotal += order.DAC.count * order.hotelId.DAC.cost;
       rooms === ""
-        ? (rooms += `${order.DAC.count}S`)
-        : (rooms += `+ ${order.DAC.count}S`);
+        ? (rooms += `${order.DAC.count}DAC`)
+        : (rooms += `+ ${order.DAC.count}DAC`);
     }
     if (order.KAC.count > 0) {
       orderTotal += order.KAC.count * order.hotelId.KAC.cost;
       rooms === ""
-        ? (rooms += `${order.KAC.count}S`)
-        : (rooms += `+ ${order.KAC.count}S`);
+        ? (rooms += `${order.KAC.count}KAC`)
+        : (rooms += `+ ${order.KAC.count}KAC`);
     }
     if (order.SAC.count > 0) {
       orderTotal += order.SAC.count * order.hotelId.SAC.cost;
       rooms === ""
-        ? (rooms += `${order.SAC.count}S`)
-        : (rooms += `+ ${order.SAC.count}S`);
+        ? (rooms += `${order.SAC.count}SAC`)
+        : (rooms += `+ ${order.SAC.count}SAC`);
     }
     const diff = Math.abs(
       new Date(order.toDate).getTime() - new Date(order.fromDate).getTime()
@@ -58,6 +59,20 @@ const AdminDashboard = () => {
     orderTotal = Math.ceil(diff / (1000 * 60 * 60 * 24)) * orderTotal;
     return { roomString: rooms, total: orderTotal };
   };
+
+  const handleDeleteOrder = (orderId: string) => {
+    ServerAPI.delete(`order/${orderId}/delete`)
+      .then((res) => {
+        if (res.status === 200) {
+          toast.success("Order deleted successfully");
+          setOrders(orders.filter((order) => order._id !== orderId));
+        }
+      })
+      .catch((err) => {
+        toast.error("Error deleting order");
+      });
+  };
+
   return (
     <div className="max-w-2xl  mx-auto flex items-center flex-col min-h-[90vh]">
       <h1 className="my-4 font-semibold text-lg uppercase">
@@ -65,32 +80,35 @@ const AdminDashboard = () => {
       </h1>
       <div className="p-1 border w-fit rounded">
         <table className="table-auto border-collapse">
-          <thead className="px-3 py-1.5 border-b">
-            <tr className="px-3 py-1.5">
-              <th className="px-3 py-1.5 font-medium"> </th>
-              <th className="px-3 py-1.5 font-medium">User</th>
-              <th className="px-3 py-1.5 font-medium">Check In</th>
-              <th className="px-3 py-1.5 font-medium">Check Out</th>
-              <th className="px-3 py-1.5 font-medium">Room Types</th>
-              <th className="px-3 py-1.5 font-medium text-right">Total</th>
-              <th className="px-3 py-1.5 font-medium"> </th>
+          <thead className="px-3 py-3 border-b">
+            <tr className="px-3 py-3">
+              <th className="px-3 py-3 font-medium"> </th>
+              <th className="px-3 py-3 font-medium">User</th>
+              <th className="px-3 py-3 font-medium">Check In</th>
+              <th className="px-3 py-3 font-medium">Check Out</th>
+              <th className="px-3 py-3 font-medium">Room Types</th>
+              <th className="px-3 py-3 font-medium text-right">Total</th>
+              <th className="px-3 py-3 font-medium"> </th>
             </tr>
           </thead>
-          <tbody className="px-3 py-1.5">
+          <tbody className="px-3 py-3">
             {orders.map((order, index) => (
-              <tr key={order._id} className="px-3 py-1.5">
-                <td className="px-3 py-1.5">{index + 1}</td>
-                <td className="px-3 py-1.5">{order.userName}</td>
-                <td className="px-3 py-1.5">{order.fromDate.slice(0, 10)}</td>
-                <td className="px-3 py-1.5">{order.toDate.slice(0, 10)}</td>
-                <td className="px-3 py-1.5 text-right">
+              <tr key={order._id} className="px-3 py-3">
+                <td className="px-3 py-3">{index + 1}</td>
+                <td className="px-3 py-3">{order.userName}</td>
+                <td className="px-3 py-3">{order.fromDate.slice(0, 10)}</td>
+                <td className="px-3 py-3">{order.toDate.slice(0, 10)}</td>
+                <td className="px-3 py-3 text-right">
                   {roomsRegisteredString(order).roomString}
                 </td>
-                <td className="px-3 py-1.5 text-right">
+                <td className="px-3 py-3 text-right">
                   ${roomsRegisteredString(order).total}
                 </td>
                 <td>
-                  <button className="px-3 py-1.5 text-red-600 bg-transparent text-sm hover:text-white rounded hover:bg-red-500">
+                  <button
+                    className="px-3 py-3 text-red-600 bg-transparent text-sm hover:text-white rounded hover:bg-red-500"
+                    onClick={() => handleDeleteOrder(order._id)}
+                  >
                     <FaTrash />
                   </button>
                 </td>
