@@ -4,6 +4,7 @@ import ServerAPI from "../api/ServerAPI";
 import { OrderType } from "../utils/types";
 import { Link } from "react-router-dom";
 import { FaTrash } from "react-icons/fa";
+import { toast } from "react-hot-toast";
 
 const OrderHistoryPage = () => {
   const userData = useAuth();
@@ -57,6 +58,23 @@ const OrderHistoryPage = () => {
     return { roomString: rooms, total: orderTotal };
   };
 
+  const handleOrderDelete = (orderId: string) => {
+    ServerAPI.delete(`/order/${orderId}/delete`)
+      .then((res) => {
+        toast.success("Order deleted successfully", {
+          icon: "🗑️",
+          iconTheme: {
+            primary: "#1F2937",
+            secondary: "#fff",
+          },
+        });
+        setOrders(orders.filter((order) => order._id !== orderId));
+      })
+      .catch((err) => {
+        toast.error("Order deletion failed");
+      });
+  };
+
   return (
     <div className="max-w-2xl  mx-auto flex items-center flex-col min-h-[90vh]">
       <h1 className="my-4 font-semibold text-lg uppercase">Order History</h1>
@@ -94,7 +112,10 @@ const OrderHistoryPage = () => {
                   ${roomsRegisteredString(order).total}
                 </td>
                 <td>
-                  <button className="px-3 py-3 text-red-600 bg-transparent text-sm hover:text-white rounded hover:bg-red-500">
+                  <button
+                    className="px-3 py-3 text-red-600 bg-transparent text-sm hover:text-white rounded hover:bg-red-500"
+                    onClick={() => handleOrderDelete(order._id)}
+                  >
                     <FaTrash />
                   </button>
                 </td>
