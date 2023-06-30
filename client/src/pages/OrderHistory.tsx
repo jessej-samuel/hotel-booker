@@ -34,26 +34,26 @@ const OrderHistoryPage = () => {
     if (order.S.count > 0) {
       orderTotal += order.S.count * order.hotelId.S.cost;
       rooms === ""
-        ? (rooms += `${order.S.count}Q`)
-        : (rooms += `+ ${order.S.count}Q`);
+        ? (rooms += `${order.S.count}S`)
+        : (rooms += `+ ${order.S.count}S`);
     }
     if (order.DAC.count > 0) {
       orderTotal += order.DAC.count * order.hotelId.DAC.cost;
       rooms === ""
-        ? (rooms += `${order.DAC.count}S`)
-        : (rooms += `+ ${order.DAC.count}S`);
+        ? (rooms += `${order.DAC.count}DAC`)
+        : (rooms += `+ ${order.DAC.count}DAC`);
     }
     if (order.KAC.count > 0) {
       orderTotal += order.KAC.count * order.hotelId.KAC.cost;
       rooms === ""
-        ? (rooms += `${order.KAC.count}S`)
-        : (rooms += `+ ${order.KAC.count}S`);
+        ? (rooms += `${order.KAC.count}KAC`)
+        : (rooms += `+ ${order.KAC.count}KAC`);
     }
     if (order.SAC.count > 0) {
       orderTotal += order.SAC.count * order.hotelId.SAC.cost;
       rooms === ""
-        ? (rooms += `${order.SAC.count}S`)
-        : (rooms += `+ ${order.SAC.count}S`);
+        ? (rooms += `${order.SAC.count}SAC`)
+        : (rooms += `+ ${order.SAC.count}SAC`);
     }
     return { roomString: rooms, total: orderTotal };
   };
