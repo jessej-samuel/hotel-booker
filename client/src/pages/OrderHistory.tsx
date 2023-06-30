@@ -62,22 +62,22 @@ const OrderHistoryPage = () => {
       <h1 className="my-4 font-semibold text-lg uppercase">Order History</h1>
       <div className="p-1 border w-fit rounded">
         <table className="table-auto border-collapse">
-          <thead className="px-3 py-1.5 border-b">
-            <tr className="px-3 py-1.5">
-              <th className="px-3 py-1.5 font-medium"> </th>
-              <th className="px-3 py-1.5 font-medium">Hotel</th>
-              <th className="px-3 py-1.5 font-medium">Check In</th>
-              <th className="px-3 py-1.5 font-medium">Check Out</th>
-              <th className="px-3 py-1.5 font-medium">Room Types</th>
-              <th className="px-3 py-1.5 font-medium text-right">Total</th>
-              <th className="px-3 py-1.5 font-medium"> </th>
+          <thead className="px-3 py-3 border-b">
+            <tr className="px-3 py-3">
+              <th className="px-3 py-3 font-medium"> </th>
+              <th className="px-3 py-3 font-medium">Hotel</th>
+              <th className="px-3 py-3 font-medium">Check In</th>
+              <th className="px-3 py-3 font-medium">Check Out</th>
+              <th className="px-3 py-3 font-medium">Room Types</th>
+              <th className="px-3 py-3 font-medium text-right">Total</th>
+              <th className="px-3 py-3 font-medium"> </th>
             </tr>
           </thead>
-          <tbody className="px-3 py-1.5">
+          <tbody className="px-3 py-3">
             {orders.map((order, index) => (
-              <tr key={order._id} className="px-3 py-1.5">
-                <td className="px-3 py-1.5">{index + 1}</td>
-                <td className="px-3 py-1.5">
+              <tr key={order._id} className="px-3 py-3">
+                <td className="px-3 py-3">{index + 1}</td>
+                <td className="px-3 py-3">
                   <Link
                     className="hover:text-blue-500 hover:underline"
                     to={"/hotel/" + order.hotelId._id}
@@ -85,16 +85,16 @@ const OrderHistoryPage = () => {
                     {order.hotelId.name}
                   </Link>
                 </td>
-                <td className="px-3 py-1.5">{order.fromDate.slice(0, 10)}</td>
-                <td className="px-3 py-1.5">{order.toDate.slice(0, 10)}</td>
-                <td className="px-3 py-1.5 text-right">
+                <td className="px-3 py-3">{order.fromDate.slice(0, 10)}</td>
+                <td className="px-3 py-3">{order.toDate.slice(0, 10)}</td>
+                <td className="px-3 py-3 text-right">
                   {roomsRegisteredString(order).roomString}
                 </td>
-                <td className="px-3 py-1.5 text-right">
+                <td className="px-3 py-3 text-right">
                   ${roomsRegisteredString(order).total}
                 </td>
                 <td>
-                  <button className="px-3 py-1.5 text-red-600 bg-transparent text-sm hover:text-white rounded hover:bg-red-500">
+                  <button className="px-3 py-3 text-red-600 bg-transparent text-sm hover:text-white rounded hover:bg-red-500">
                     <FaTrash />
                   </button>
                 </td>
