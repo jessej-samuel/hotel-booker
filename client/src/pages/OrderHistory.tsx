@@ -3,7 +3,7 @@ import useAuth from "../utils/hooks";
 import ServerAPI from "../api/ServerAPI";
 import { OrderType } from "../utils/types";
 import { Link } from "react-router-dom";
-import { FaTrash } from "react-icons/fa";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 
 const OrderHistoryPage = () => {
@@ -55,6 +55,12 @@ const OrderHistoryPage = () => {
         ? (rooms += `${order.SAC.count}SAC`)
         : (rooms += `+ ${order.SAC.count}SAC`);
     }
+    let diff = Math.abs(
+      new Date(order.toDate).getTime() - new Date(order.fromDate).getTime()
+    );
+    diff = diff / (1000 * 60 * 60 * 24);
+    orderTotal *= diff;
+    console.log("LOG:", order, orderTotal);
     return { roomString: rooms, total: orderTotal };
   };
 
@@ -113,10 +119,20 @@ const OrderHistoryPage = () => {
                 </td>
                 <td>
                   <button
-                    className="px-3 py-3 text-red-600 bg-transparent text-sm hover:text-white rounded hover:bg-red-500"
+                    className="px-3 py-3 transition-all text-red-600 bg-transparent text-sm hover:text-white rounded hover:bg-red-500"
                     onClick={() => handleOrderDelete(order._id)}
                   >
                     <FaTrash />
+                  </button>
+                </td>
+                <td>
+                  <button className="px-3 py-3 transition-all text-blue-600 bg-transparent text-sm hover:text-white rounded hover:bg-blue-500 flex items-center justify-center">
+                    <Link
+                      className="text-lg"
+                      to={"/order/" + order._id + "/edit"}
+                    >
+                      <FaEdit />
+                    </Link>
                   </button>
                 </td>
               </tr>

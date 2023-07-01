@@ -50,6 +50,9 @@ const router = createBrowserRouter([
         path: "/orders",
         element: <OrderHistoryPage />,
       },
+      {
+        path: "/order/:orderId/edit",
+      },
     ],
   },
 ]);
