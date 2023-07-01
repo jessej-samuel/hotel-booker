@@ -2,12 +2,15 @@ import { OrderAdminType } from "../utils/types";
 import ServerAPI from "../api/ServerAPI";
 import { useEffect, useState } from "react";
 import useAuth from "../utils/hooks";
-import { FaTrash } from "react-icons/fa";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
+import ReactModal from "react-modal";
 
 const AdminDashboard = () => {
   const userData = useAuth();
   const [orders, setOrders] = useState([] as OrderAdminType[]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState("" as string);
 
   useEffect(() => {
     ServerAPI.get(`hotel/${userData._id}/orders`).then((res) => {
@@ -61,16 +64,22 @@ const AdminDashboard = () => {
   };
 
   const handleDeleteOrder = (orderId: string) => {
-    ServerAPI.delete(`order/${orderId}/delete`)
+    setShowModal(true);
+    setSelectedOrder(orderId);
+  };
+
+  const handleConfirmDelete = () => {
+    ServerAPI.delete(`order/${selectedOrder}/delete`)
       .then((res) => {
         if (res.status === 200) {
           toast.success("Order deleted successfully");
-          setOrders(orders.filter((order) => order._id !== orderId));
+          setOrders(orders.filter((order) => order._id !== selectedOrder));
         }
       })
       .catch((err) => {
         toast.error("Error deleting order");
       });
+    setShowModal(false);
   };
 
   return (
@@ -89,9 +98,15 @@ const AdminDashboard = () => {
               <th className="px-3 py-3 font-medium">Room Types</th>
               <th className="px-3 py-3 font-medium text-right">Total</th>
               <th className="px-3 py-3 font-medium"> </th>
+              <th className="px-3 py-3 font-medium"> </th>
             </tr>
           </thead>
           <tbody className="px-3 py-3">
+            {orders.length === 0 ? (
+              <tr className="px-3 py-3">
+                <td className="px-3 py-3 text-center">No orders yet</td>
+              </tr>
+            ) : null}
             {orders.map((order, index) => (
               <tr key={order._id} className="px-3 py-3">
                 <td className="px-3 py-3">{index + 1}</td>
@@ -110,6 +125,29 @@ const AdminDashboard = () => {
                     onClick={() => handleDeleteOrder(order._id)}
                   >
                     <FaTrash />
+                  </button>
+                </td>
+                <td>
+                  <button
+                    className="px-3 py-3 text-blue-600 bg-transparent text-lg hover:text-white rounded hover:bg-blue-500"
+                    // onClick={() => handleDeleteOrder(order._id)}
+                  >
+                    <FaEdit />
+                    <ReactModal
+                      isOpen={showModal}
+                      onRequestClose={() => setShowModal(false)}
+                      className="top-1/2 fixed left-1/2 z-[51] p-10 min-w-fit min-h-fit flex flex-col justify-center items-center bg-red-600 text-white  rounded-lg shadow-lg outline-none -translate-x-1/2 -translate-y-1/2 gap-y-6"
+                    >
+                      <p className="font-semibold">
+                        You really want to delete? 👀
+                      </p>
+                      <button
+                        className="bg-white text-red-600 w-full rounded py-2 font-normal hover:shadow hover:bg-neutral-150"
+                        onClick={handleConfirmDelete}
+                      >
+                        Confirm
+                      </button>
+                    </ReactModal>
                   </button>
                 </td>
               </tr>
