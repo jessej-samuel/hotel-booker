@@ -1,6 +1,6 @@
 import { BiLogOut } from "react-icons/bi";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [showLogout, setShowLogout] = useState(false);
@@ -19,12 +19,20 @@ const Navbar = () => {
           onMouseLeave={() => {
             if (showLogout) setShowLogout(false);
           }}
+          onMouseEnter={() => {
+            if (!showLogout) setShowLogout(true);
+          }}
         >
           <div
             className="flex items-center gap-x-3 cursor-pointer "
             onClick={() => setShowLogout((s) => !s)}
           >
-            <p onSelect={(e) => e.preventDefault()}>{userData.username}</p>
+            {userData.type === "user" ? (
+              <Link to={"/orders"}>Your orders</Link>
+            ) : null}
+            <p onSelect={(e) => e.preventDefault()}>
+              {userData.username || userData.name}
+            </p>
             <img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRA7UbmM2x9QWw6Sga9Cc4x2INxD5MwiyhvxjWNKjuyxz3gAwcjM1kLab-vRfsmypHx1JE&usqp=CAU"
               className="aspect-square w-10 rounded-full"
