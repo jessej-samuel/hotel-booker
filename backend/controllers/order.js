@@ -78,6 +78,22 @@ const deleteOrder = asyncHandler(async (req, res) => {
   else throw new CustomError("No such order exist", 400);
 });
 
+const getOrderDetail = asyncHandler(async (req, res) => {
+  const { orderId } = req.params;
+
+  if (!orderId) {
+    throw new CustomError("Please specify the orderId to get details", 400);
+  }
+  try {
+    const result = await OrderModel.findOne({
+      _id: orderId,
+    });
+    res.status(200).send(result);
+  } catch (error) {
+    throw new CustomError("No such order exist", 400);
+  }
+});
+
 const editOrder = asyncHandler(async (req, res) => {
   const { orderId } = req.params;
   const { K, KAC, D, DAC, S, SAC } = req.body;
@@ -139,4 +155,4 @@ const editOrder = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { orderHotel, deleteOrder, editOrder };
+module.exports = { orderHotel, deleteOrder, editOrder, getOrderDetail };
