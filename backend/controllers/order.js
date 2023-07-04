@@ -104,7 +104,7 @@ const editOrder = asyncHandler(async (req, res) => {
     let oldOrder = await OrderModel.findOne({
       _id: orderId,
     });
-    console.log(oldOrder);
+    // console.log(oldOrder);
     const { data } = await Axios.get(
       `${process.env.BASE_URL}/hotel/${oldOrder.hotelId}/availability?from=${oldOrder.fromDate}&to=${oldOrder.toDate}`
     );
