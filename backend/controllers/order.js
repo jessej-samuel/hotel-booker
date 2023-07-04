@@ -111,7 +111,9 @@ const editOrder = asyncHandler(async (req, res) => {
     const check = (type, obj) => {
       if (oldOrder[type].count + data[type] < obj.count) {
         throw new CustomError(
-          `Sorry we dont have that much ${type} room right now`,
+          `Only ${
+            oldOrder[type].count + data[type]
+          } ${type} rooms are available!`,
           400
         );
       }
