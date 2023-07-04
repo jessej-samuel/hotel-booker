@@ -66,7 +66,7 @@ const OrderHistoryPage = () => {
 
   const handleOrderDelete = (orderId: string) => {
     ServerAPI.delete(`/order/${orderId}/delete`)
-      .then((res) => {
+      .then(() => {
         toast.success("Order deleted successfully", {
           icon: "🗑️",
           iconTheme: {
@@ -78,6 +78,7 @@ const OrderHistoryPage = () => {
       })
       .catch((err) => {
         toast.error("Order deletion failed");
+        console.log(err);
       });
   };
 
@@ -119,14 +120,14 @@ const OrderHistoryPage = () => {
                 </td>
                 <td>
                   <button
-                    className="px-3 py-3 transition-all text-red-600 bg-transparent text-sm hover:text-white rounded hover:bg-red-500"
+                    className="px-3 py-3 transition-all text-red-600 bg-transparent text-sm hover:text-white rounded-full hover:bg-red-500"
                     onClick={() => handleOrderDelete(order._id)}
                   >
                     <FaTrash />
                   </button>
                 </td>
                 <td>
-                  <button className="px-3 py-3 transition-all text-blue-600 bg-transparent text-sm hover:text-white rounded hover:bg-blue-500 flex items-center justify-center">
+                  <button className="px-3 py-3 transition-all text-blue-600 bg-transparent text-sm hover:text-white rounded-full hover:bg-blue-500 flex items-center justify-center">
                     <Link
                       className="text-lg"
                       to={"/order/" + order._id + "/edit"}

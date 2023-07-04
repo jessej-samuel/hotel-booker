@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
@@ -11,6 +10,7 @@ import HotelRegister from "./components/HotelRegister.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import HotelPage from "./pages/HotelPage.tsx";
 import OrderHistoryPage from "./pages/OrderHistory.tsx";
+import OrderEdit from "./pages/OrderEdit.tsx";
 
 const router = createBrowserRouter([
   {
@@ -52,13 +52,12 @@ const router = createBrowserRouter([
       },
       {
         path: "/order/:orderId/edit",
+        element: <OrderEdit />,
       },
     ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+  <RouterProvider router={router} />
 );

@@ -5,17 +5,23 @@ import useAuth from "../utils/hooks";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
 import ReactModal from "react-modal";
+import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
   const userData = useAuth();
   const [orders, setOrders] = useState([] as OrderAdminType[]);
   const [showModal, setShowModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState("" as string);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    ServerAPI.get(`hotel/${userData._id}/orders`).then((res) => {
-      setOrders(res.data);
-    });
+    ServerAPI.get(`/hotel/${userData._id}/orders`)
+      .then((res) => {
+        setOrders(res.data);
+      })
+      .catch((err) => {
+        console.log("haha got u", err);
+      });
   }, [userData._id]);
   const roomsRegisteredString = (order: OrderAdminType) => {
     let rooms = "";
@@ -78,8 +84,13 @@ const AdminDashboard = () => {
       })
       .catch((err) => {
         toast.error("Error deleting order");
+        console.log(err);
       });
     setShowModal(false);
+  };
+
+  const handleEditOrder = (orderId: string) => {
+    navigate(`/order/${orderId}/edit`);
   };
 
   return (
@@ -130,7 +141,7 @@ const AdminDashboard = () => {
                 <td>
                   <button
                     className="px-3 py-3 text-blue-600 bg-transparent text-lg hover:text-white rounded hover:bg-blue-500"
-                    // onClick={() => handleDeleteOrder(order._id)}
+                    onClick={() => handleEditOrder(order._id)}
                   >
                     <FaEdit />
                     <ReactModal

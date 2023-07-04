@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import ServerAPI from "../api/ServerAPI";
+import toast from "react-hot-toast";
 
 const UserRegister = () => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -12,6 +13,10 @@ const UserRegister = () => {
     ServerAPI.post("/auth/user/register", data)
       .then((res) => {
         console.log(res.data);
+        if (res.data.success) {
+          toast.success("User registered successfully!");
+          formRef.current?.reset();
+        }
       })
       .catch((err) => {
         console.log(err);
