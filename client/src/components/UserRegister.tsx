@@ -1,9 +1,10 @@
 import { useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ServerAPI from "../api/ServerAPI";
 import toast from "react-hot-toast";
 
 const UserRegister = () => {
+  const navigate = useNavigate();
   const formRef = useRef<HTMLFormElement>(null);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -12,10 +13,9 @@ const UserRegister = () => {
     console.log(data); // post data to server
     ServerAPI.post("/auth/user/register", data)
       .then((res) => {
-        console.log(res.data);
         if (res.data.success) {
           toast.success("User registered successfully!");
-          formRef.current?.reset();
+          navigate("/user/login");
         }
       })
       .catch((err) => {

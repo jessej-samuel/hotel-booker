@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ServerAPI from "../api/ServerAPI";
+import { toast } from "react-hot-toast";
 
 const sampleData = {
   double_cost: "100",
@@ -62,6 +63,7 @@ const formatData = (data: typeof sampleData) => {
 };
 
 const HotelRegister = () => {
+  const navigate = useNavigate();
   const formRef = useRef(null);
   useEffect(() => {
     document.title = "Hotel Register";
@@ -82,6 +84,11 @@ const HotelRegister = () => {
                   ) as typeof sampleData
                 )
               ) // post this data to the server
+              .then(() => {
+                toast.success("Hotel registered successfully");
+                navigate("/hotel/login");
+              }
+              )
             : null;
         }}
       >
