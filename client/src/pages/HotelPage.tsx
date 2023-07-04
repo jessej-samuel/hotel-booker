@@ -143,7 +143,7 @@ const HotelPage = () => {
   const handleToChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     if (e.target.value <= from) {
-      alert("Please select a date after the start date");
+      toast.error("To date should be greater than from date");
       setTo(
         // set to date to next day of from
         new Date(new Date(from).getTime() + 24 * 60 * 60 * 1000)
