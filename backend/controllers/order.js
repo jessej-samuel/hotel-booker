@@ -78,4 +78,83 @@ const deleteOrder = asyncHandler(async (req, res) => {
   else throw new CustomError("No such order exist", 400);
 });
 
-module.exports = { orderHotel, deleteOrder };
+const getOrderDetail = asyncHandler(async (req, res) => {
+  const { orderId } = req.params;
+
+  if (!orderId) {
+    throw new CustomError("Please specify the orderId to get details", 400);
+  }
+  try {
+    const result = await OrderModel.findOne({
+      _id: orderId,
+    });
+    res.status(200).send(result);
+  } catch (error) {
+    throw new CustomError("No such order exist", 400);
+  }
+});
+
+const editOrder = asyncHandler(async (req, res) => {
+  const { orderId } = req.params;
+  const { K, KAC, D, DAC, S, SAC } = req.body;
+  if (!orderId) {
+    throw new CustomError("Please specify the orderId to edit", 400);
+  }
+  try {
+    let oldOrder = await OrderModel.findOne({
+      _id: orderId,
+    });
+    // console.log(oldOrder);
+    const { data } = await Axios.get(
+      `${process.env.BASE_URL}/hotel/${oldOrder.hotelId}/availability?from=${oldOrder.fromDate}&to=${oldOrder.toDate}`
+    );
+    const check = (type, obj) => {
+      if (oldOrder[type].count + data[type] < obj.count) {
+        throw new CustomError(
+          `Only ${
+            oldOrder[type].count + data[type]
+          } ${type} rooms are available!`,
+          400
+        );
+      }
+    };
+    let newOrder = {};
+
+    if (K) {
+      check("K", K);
+      newOrder["K"] = K;
+    }
+    if (D) {
+      check("D", D);
+      newOrder["D"] = D;
+    }
+    if (S) {
+      check("S", S);
+      newOrder["S"] = S;
+    }
+    if (DAC) {
+      check("DAC", DAC);
+      newOrder["DAC"] = DAC;
+    }
+    if (KAC) {
+      check("KAC", KAC);
+      newOrder["KAC"] = KAC;
+    }
+    if (SAC) {
+      check("SAC", SAC);
+      newOrder["SAC"] = SAC;
+    }
+    const result = await OrderModel.findOneAndUpdate(
+      { _id: orderId },
+      newOrder,
+      {
+        new: true,
+      }
+    );
+    res.status(200).send(result);
+  } catch (err) {
+    throw new CustomError(err.message, 400);
+  }
+});
+
+module.exports = { orderHotel, deleteOrder, editOrder, getOrderDetail };

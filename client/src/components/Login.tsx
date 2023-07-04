@@ -39,6 +39,9 @@ const Login = () => {
   return (
     <div className="min-h-screen flex justify-center flex-col">
       <form className="min-w-fit w-64 mx-auto" onSubmit={handleSubmit}>
+        <h1 className="text-xl font-semibold text-center mb-6">
+          Login for {who}s
+        </h1>
         <div className="flex flex-col gap-2 mb-4">
           <label htmlFor="email">Email</label>
           <input

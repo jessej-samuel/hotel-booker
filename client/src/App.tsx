@@ -4,7 +4,7 @@ import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
-    <div className="bg-sky-50">
+    <div className="bg-white">
       <Toaster />
       <Navbar />
       <Outlet />

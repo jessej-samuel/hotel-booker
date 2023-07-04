@@ -8,9 +8,11 @@ import { HotelMetaData, RoomAvailabilityType } from "../utils/types";
 import { toast } from "react-hot-toast";
 
 const HotelPage = () => {
+  // data hooks
   const userData = useAuth();
   const { id } = useParams();
 
+  //states
   const [total, setTotal] = useState(0);
   const [roomAvailability, setRoomAvailability] = useState({
     K: 0,
@@ -62,9 +64,7 @@ const HotelPage = () => {
     updatedAt: "2023-06-22T10:11:59.417Z",
     __v: 0,
   } as HotelMetaData);
-
   const [ableToBook, setAbleToBook] = useState(true);
-
   const [orderDetails, setOrderDetails] = useState({
     userId: "",
     username: "",
@@ -91,6 +91,7 @@ const HotelPage = () => {
     },
   });
 
+  // refs
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
@@ -120,10 +121,9 @@ const HotelPage = () => {
   useEffect(() => {
     const fromDate = new Date(from);
     const toDate = new Date(to);
-    console.log("From", from);
-    console.log("To", to);
+
     const diff = toDate.getTime() - fromDate.getTime();
-    console.log("Diff", diff);
+
     const days = diff / (1000 * 3600 * 24);
     let total = 0;
     total += orderDetails.K.count * hotelMetaData.K.cost * days;
@@ -132,9 +132,6 @@ const HotelPage = () => {
     total += orderDetails.DAC.count * hotelMetaData.DAC.cost * days;
     total += orderDetails.S.count * hotelMetaData.S.cost * days;
     total += orderDetails.SAC.count * hotelMetaData.SAC.cost * days;
-    console.log("Total", total);
-    console.log("Days", days);
-    console.log("Order Details", orderDetails);
 
     setTotal(total);
   }, [orderDetails, hotelMetaData, from, to]);
@@ -146,7 +143,7 @@ const HotelPage = () => {
   const handleToChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     if (e.target.value <= from) {
-      alert("Please select a date after the start date");
+      toast.error("To date should be greater than from date");
       setTo(
         // set to date to next day of from
         new Date(new Date(from).getTime() + 24 * 60 * 60 * 1000)
@@ -159,7 +156,6 @@ const HotelPage = () => {
   const handleBookNowClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setAbleToBook(false);
-    alert(JSON.stringify(userData));
     const orderData = {
       ...orderDetails,
       userId: userData._id,

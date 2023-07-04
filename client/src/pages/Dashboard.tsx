@@ -8,6 +8,7 @@ const Dashboard = () => {
     name: "",
     email: "",
     id: "",
+    username: "",
   });
   useAuth();
   const navigate = useNavigate();
@@ -17,8 +18,10 @@ const Dashboard = () => {
     );
   }, []);
   return (
-    <div className="mt-8 px-6">
-      <h1 className="text-4xl font-bold mb-4">Hello {userData.name}!</h1>
+    <div className="mt-8 px-6 min-h-[90vh]">
+      <h1 className="text-4xl font-bold mb-4">
+        Hello {userData.name || userData.username.split(" ")[0]}!
+      </h1>
       <HotelList />
     </div>
   );

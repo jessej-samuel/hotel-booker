@@ -12,6 +12,7 @@ const useAuth = () => {
   useEffect(() => {
     const user =
       JSON.parse(localStorage.getItem("userData") || "{}") || undefined;
+    setUserData(user);
     const path = window.location.pathname;
 
     if (path === "/hotel/login" && userData.type === "hotel")
