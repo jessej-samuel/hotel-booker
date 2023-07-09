@@ -1,0 +1,14 @@
+.my-table td {
+    padding: 3%; /* Adds gaps between cells */
+    border-spacing: 50px;
+  }
+  
+  .my-table .image-cell {
+    width: 500px; /* Set the width of the image column */
+  }
+  
+  .my-table .image-cell img {
+    width: 100%; /* Ensures the image is fully visible */
+    height: auto; /* Maintains the aspect ratio */
+  }
+  

@@ -1,0 +1,19 @@
+.amenities-container {
+    display: flex;
+  }
+  
+  .amenities-card {
+    flex: 1;
+    margin: 0 10px;
+    text-align: center;
+  }
+  
+  .amenities-icon {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .amenities-title {
+    font-size: 16px;
+  }
+  
