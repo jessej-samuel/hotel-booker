@@ -233,8 +233,6 @@ const HotelPage = () => {
       });
     }
   };
-  const latitude = 40.7128; // Replace with the actual latitude of the hotel
-  const longitude = -74.0060; // Replace with the actual longitude of the hotel
   const handleClick = () => {
     setShowContent(true);
   };
