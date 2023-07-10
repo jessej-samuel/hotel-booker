@@ -6,11 +6,15 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import useAuth from "../utils/hooks";
 import { HotelMetaData, RoomAvailabilityType } from "../utils/types";
 import { toast } from "react-hot-toast";
+import './comp.css';
+import HotelReviews from "./HotelReviews";
+import Amenities from "./Amenities";
 
 const HotelPage = () => {
   // data hooks
   const userData = useAuth();
   const { id } = useParams();
+  const [showContent, setShowContent] = useState(false);
 
   //states
   const [total, setTotal] = useState(0);
@@ -90,6 +94,12 @@ const HotelPage = () => {
       count: 0,
     },
   });
+  const reviews = [
+    { id: 1, reviewer: 'John Doe', rating: 4, comment: 'Great hotel with excellent service!' },
+    { id: 2, reviewer: 'Jane Smith', rating: 5, comment: 'Absolutely loved our stay. Highly recommended!' },
+    // Add more review objects with the 'id' property
+  ];
+  
 
   // refs
   const formRef = useRef<HTMLFormElement>(null);
@@ -223,6 +233,10 @@ const HotelPage = () => {
       });
     }
   };
+  const handleClick = () => {
+    setShowContent(true);
+  };
+  const amenities = ['Wifi', 'Swimming Pool', 'Parking', 'Restaurant', 'Gym'];
 
   return (
     <div className="mx-auto my-5 px-8 max-w-4xl">
@@ -264,9 +278,9 @@ const HotelPage = () => {
       </p>
       <p className="mt-2"></p>
       <h1 className="text-2xl font-bold my-4">Book a Room</h1>
-      <div className="flex justify-between items-end">
-        <form className="w-96" ref={formRef}>
-          <div className="flex flex-col mt-4">
+      <div className="card">
+      <div className="card-body">
+      <div className="flex flex-col mt-4">
             <label className="text-sm mb-2 text-gray-600 uppercase font-medium">
               Check In
             </label>
@@ -290,137 +304,164 @@ const HotelPage = () => {
               className="border border-gray-300 rounded-md p-2"
             />
           </div>
-          <div className="flex flex-col mt-4">
-            <table>
-              <thead>
-                <tr>
-                  <th className="pb-3 text-left text-sm uppercase font-medium">
-                    Room Type
-                  </th>
-                  <th className="pb-3 font-medium text-sm uppercase text-right">
-                    Cost
-                  </th>
-                  <th className="pb-3 text-right text-sm uppercase font-medium">
-                    Available
-                  </th>
-                  <th className="pb-3 text-right text-sm uppercase font-medium">
-                    Select
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="text-left">Single (1 bed)</td>
-                  <td className="text-right">{hotelMetaData.S.cost}</td>
-                  <td className="text-right">{roomAvailability.S}</td>
-                  <td className="text-right">
-                    <input
-                      type="number"
-                      min="0"
-                      name="S"
-                      max={roomAvailability.S}
-                      value={orderDetails.S.count}
-                      onChange={(e) => handleOrderCountChange(e, "S")}
-                      className="w-24 border p-2 rounded-md out-of-range:border-red-500 out-of-range:border-2 out-of-range:focus:outline-red-500"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td className="text-left">Single AC (1 bed)</td>
-                  <td className="text-right">{hotelMetaData.SAC.cost}</td>
-                  <td className="text-right">{roomAvailability.SAC}</td>
-                  <td className="text-right">
-                    <input
-                      type="number"
-                      min="0"
-                      name="SAC"
-                      max={roomAvailability.SAC}
-                      value={orderDetails.SAC.count}
-                      onChange={(e) => handleOrderCountChange(e, "SAC")}
-                      className="w-24 border p-2 rounded-md out-of-range:border-red-500 out-of-range:border-2 out-of-range:focus:outline-red-500"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td className="text-left">Double (2 beds)</td>
-                  <td className="text-right">{hotelMetaData.D.cost}</td>
-                  <td className="text-right">{roomAvailability.D}</td>
-                  <td className="text-right">
-                    <input
-                      type="number"
-                      min="0"
-                      name="D"
-                      max={roomAvailability.D}
-                      value={orderDetails.D.count}
-                      onChange={(e) => handleOrderCountChange(e, "D")}
-                      className="w-24 border p-2 rounded-md out-of-range:border-red-500 out-of-range:border-2 out-of-range:focus:outline-red-500"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td className="text-left">Double AC (2 beds)</td>
-                  <td className="text-right">{hotelMetaData.DAC.cost}</td>
-                  <td className="text-right">{roomAvailability.DAC}</td>
-                  <td className="text-right">
-                    <input
-                      type="number"
-                      min="0"
-                      name="DAC"
-                      max={roomAvailability.DAC}
-                      value={orderDetails.DAC.count}
-                      onChange={(e) => handleOrderCountChange(e, "DAC")}
-                      className="w-24 border p-2 rounded-md out-of-range:border-red-500 out-of-range:border-2 out-of-range:focus:outline-red-500"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td className="text-left">King (4 beds)</td>
-                  <td className="text-right">{hotelMetaData.K.cost}</td>
-                  <td className="text-right">{roomAvailability.K}</td>
-                  <td className="text-right">
-                    <input
-                      type="number"
-                      min="0"
-                      name="K"
-                      max={roomAvailability.K}
-                      value={orderDetails.K.count}
-                      onChange={(e) => handleOrderCountChange(e, "K")}
-                      className="w-24 border p-2 rounded-md out-of-range:border-red-500 out-of-range:border-2 out-of-range:focus:outline-red-500"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td className="text-left">King AC (4 beds)</td>
-                  <td className="text-right">{hotelMetaData.KAC.cost}</td>
-                  <td className="text-right">{roomAvailability.KAC}</td>
-                  <td className="text-right">
-                    <input
-                      type="number"
-                      min="0"
-                      name="KAC"
-                      max={roomAvailability.KAC}
-                      value={orderDetails.KAC.count}
-                      onChange={(e) => handleOrderCountChange(e, "KAC")}
-                      className="w-24 border p-2 rounded-md out-of-range:border-red-500 out-of-range:border-2 out-of-range:focus:outline-red-500"
-                    />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <button onClick={handleClick} 
+          className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4 disabled:bg-blue-300 disabled:cursor-not-allowed">
+            Book Now</button>
+            {showContent && (
+            <div>
+            <div className="flex justify-between items-end">
+              <form className="w-96" ref={formRef}>
+                <div className="flex flex-col mt-14 table-container">
+                  <table className="table table-bordered my-table">
+                    <thead>
+                      <tr>
+                        <th className="pb-8 text-center text-sm uppercase font-medium">
+                          Image
+                        </th>
+                        <th className="pb-8 text-center text-sm uppercase font-medium">
+                          Room Type
+                        </th>
+                        <th className="pb-8 font-medium text-sm uppercase text-center">
+                          Cost
+                        </th>
+                        <th className="pb-8 text-center text-sm uppercase font-medium">
+                          Available
+                        </th>
+                        <th className="pb-8 text-center text-sm uppercase font-medium">
+                          Select
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td className="text-left"><img src="https://setupmyhotel.com/images/Room-Type-Single-Room.jpg"alt="Image" className="image-cell" /></td>
+                        <td className="text-center">Single (1 bed)</td>
+                        <td className="text-center">{hotelMetaData.S.cost}</td>
+                        <td className="text-center">{roomAvailability.S}</td>
+                        <td className="text-center">
+                          <input
+                            type="number"
+                            min="0"
+                            name="S"
+                            max={roomAvailability.S}
+                            value={orderDetails.S.count}
+                            onChange={(e) => handleOrderCountChange(e, "S")}
+                            className="w-24 border p-2 rounded-md out-of-range:border-red-500 out-of-range:border-2 out-of-range:focus:outline-red-500"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                      <td className="text-left"><img src="https://setupmyhotel.com/images/Room-Type-Single-Room.jpg"alt="Image" className="image-cell" /></td>
+                        <td className="text-center">Single AC (1 bed)</td>
+                        <td className="text-center">{hotelMetaData.SAC.cost}</td>
+                        <td className="text-center">{roomAvailability.SAC}</td>
+                        <td className="text-center">
+                          <input
+                            type="number"
+                            min="0"
+                            name="SAC"
+                            max={roomAvailability.SAC}
+                            value={orderDetails.SAC.count}
+                            onChange={(e) => handleOrderCountChange(e, "SAC")}
+                            className="w-24 border p-2 rounded-md out-of-range:border-red-500 out-of-range:border-2 out-of-range:focus:outline-red-500"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                      <td className="text-left"><img src="https://thehollandhotel.com/wp-content/uploads/2019/07/Double-bed-image-1024x576.jpg"alt="Image" className="image-cell"/></td>
+                        <td className="text-center">Double (2 beds)</td>
+                        <td className="text-center">{hotelMetaData.D.cost}</td>
+                        <td className="text-center">{roomAvailability.D}</td>
+                        <td className="text-center">
+                          <input
+                            type="number"
+                            min="0"
+                            name="D"
+                            max={roomAvailability.D}
+                            value={orderDetails.D.count}
+                            onChange={(e) => handleOrderCountChange(e, "D")}
+                            className="w-24 border p-2 rounded-md out-of-range:border-red-500 out-of-range:border-2 out-of-range:focus:outline-red-500"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                      <td className="text-left"><img src="https://thehollandhotel.com/wp-content/uploads/2019/07/Double-bed-image-1024x576.jpg"alt="Image" className="image-cell"/></td>
+                        <td className="text-center">Double AC (2 beds)</td>
+                        <td className="text-center">{hotelMetaData.DAC.cost}</td>
+                        <td className="text-center">{roomAvailability.DAC}</td>
+                        <td className="text-center">
+                          <input
+                            type="number"
+                            min="0"
+                            name="DAC"
+                            max={roomAvailability.DAC}
+                            value={orderDetails.DAC.count}
+                            onChange={(e) => handleOrderCountChange(e, "DAC")}
+                            className="w-24 border p-2 rounded-md out-of-range:border-red-500 out-of-range:border-2 out-of-range:focus:outline-red-500"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                      <td className="text-left"><img src="https://libraryhotel.com/_novaimg/galleria/1332646.jpg"alt="Image" className="image-cell"/></td>
+                        <td className="text-center">King (4 beds)</td>
+                        <td className="text-center">{hotelMetaData.K.cost}</td>
+                        <td className="text-center">{roomAvailability.K}</td>
+                        <td className="text-center">
+                          <input
+                            type="number"
+                            min="0"
+                            name="K"
+                            max={roomAvailability.K}
+                            value={orderDetails.K.count}
+                            onChange={(e) => handleOrderCountChange(e, "K")}
+                            className="w-24 border p-2 rounded-md out-of-range:border-red-500 out-of-range:border-2 out-of-range:focus:outline-red-500"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                      <td className="text-left"><img src="https://libraryhotel.com/_novaimg/galleria/1332646.jpg"alt="Image" className="image-cell"/></td>
+                        <td className="text-center">King AC (4 beds)</td>
+                        <td className="text-center">{hotelMetaData.KAC.cost}</td>
+                        <td className="text-center">{roomAvailability.KAC}</td>
+                        <td className="text-center">
+                          <input
+                            type="number"
+                            min="0"
+                            name="KAC"
+                            max={roomAvailability.KAC}
+                            value={orderDetails.KAC.count}
+                            onChange={(e) => handleOrderCountChange(e, "KAC")}
+                            className="w-24 border p-2 rounded-md out-of-range:border-red-500 out-of-range:border-2 out-of-range:focus:outline-red-500"
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </form>
           </div>
-        </form>
-        <div className="flex items-baseline gap-x-4">
-          <p className="font-semibold text-2xl text-right">${total}</p>
-          <button
-            className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4 disabled:bg-blue-300 disabled:cursor-not-allowed"
-            onClick={handleBookNowClick}
-            disabled={total === 0 || !ableToBook}
-          >
-            Book Now
-          </button>
-        </div>
-      </div>
+              <div className="flex items-baseline gap-x-4 ">
+                <p className="font-semibold text-2xl text-right">₹{total}</p>
+                <button
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4 disabled:bg-blue-300 disabled:cursor-not-allowed"
+                  onClick={handleBookNowClick}
+                  disabled={total === 0 || !ableToBook}
+                >
+                  Book Now
+                </button>
+              </div>
+            </div>
+            )
+          }
+      </div>  
     </div>
+    <br />
+    <Amenities amenities={amenities} />
+    <h1 className="text-2xl font-bold my-4">Reviews:</h1>
+      <div>
+      <HotelReviews reviews={reviews} />
+    </div>
+  </div>  
   );
 };
 

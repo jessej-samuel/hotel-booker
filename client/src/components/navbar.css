@@ -1,0 +1,16 @@
+.dark-mode-toggle-container {
+    margin-right: 1rem;
+  }
+  
+  .dark-mode-toggle-button {
+    background-color: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+  }
+  
+  .dark-mode-toggle-button:hover {
+    color: #ff0; /* Update with your desired hover color */
+  }
