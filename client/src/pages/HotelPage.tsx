@@ -334,7 +334,7 @@ const HotelPage = () => {
                     </thead>
                     <tbody>
                       <tr>
-                        <td className="text-left"><img src="https://setupmyhotel.com/images/Room-Type-Single-Room.jpg"alt="Image" className="image-cell" /></td>
+                        <td className="text-left"><img src="https://setupmyhotel.com/images/Room-Type-Single-Room.jpg"alt="Image" className="image-fluid" /></td>
                         <td className="text-center">Single (1 bed)</td>
                         <td className="text-center">{hotelMetaData.S.cost}</td>
                         <td className="text-center">{roomAvailability.S}</td>

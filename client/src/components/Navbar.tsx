@@ -1,7 +1,8 @@
 import { BiLogOut } from "react-icons/bi";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
+import logo from '../assets/roomreserve-low-resolution-logo-color-on-transparent-background.png';
+import './navbar.css';
 const Navbar = () => {
   const [showLogout, setShowLogout] = useState(false);
   const navigate = useNavigate();
@@ -68,7 +69,7 @@ const Navbar = () => {
   return (
     <nav className="flex sticky top-0 justify-between items-center h-16 z-50 bg-blue-50 text-black border-b shadow-md font-mono ">
       <a href="/" className="pl-8">
-        Hotel Booking
+      <img src={logo} alt="logo" className='w-15 h-14 object-contain'/>
       </a>
       <div className="px-4 cursor-pointer hidden">
         <svg
