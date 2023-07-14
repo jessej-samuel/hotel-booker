@@ -16,7 +16,6 @@ const HotelList: React.FC = () => {
   const [hotels, setHotels] = useState<HotelType[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const user = useAuth();
-  const navigate = useNavigate();
 
   useEffect(() => {
     ServerAPI.get("/hotel").then((res) => setHotels(res.data));
