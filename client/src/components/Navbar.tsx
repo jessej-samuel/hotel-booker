@@ -1,8 +1,8 @@
 import { BiLogOut } from "react-icons/bi";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import logo from '../assets/roomreserve-low-resolution-logo-color-on-transparent-background.png';
-import './navbar.css';
+import logo from "../assets/roomreserve-low-resolution-logo-color-on-transparent-background.png";
+import "./navbar.css";
 const Navbar = () => {
   const [showLogout, setShowLogout] = useState(false);
   const navigate = useNavigate();
@@ -51,25 +51,25 @@ const Navbar = () => {
       );
     return (
       <div className="pr-8 md:block">
-        <a
-          href="/hotel/login"
+        <Link
+          to="/hotel/login"
           className="p-4 hover:text-blue-500 transition duration-300 ease-in"
         >
           Hotel Login
-        </a>
-        <a
-          href="/user/login"
+        </Link>
+        <Link
+          to="/user/login"
           className="p-4 hover:text-blue-500 transition duration-300 ease-in"
         >
           User Login
-        </a>
+        </Link>
       </div>
     );
   };
   return (
     <nav className="flex sticky top-0 justify-between items-center h-16 z-50 bg-blue-50 text-black border-b shadow-md font-mono ">
       <a href="/" className="pl-8">
-      <img src={logo} alt="logo" className='w-15 h-14 object-contain'/>
+        <img src={logo} alt="logo" className="w-15 h-14 object-contain" />
       </a>
       <div className="px-4 cursor-pointer hidden">
         <svg
